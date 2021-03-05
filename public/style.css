@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap');
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body,
+input,
+header{
+    font-family: 'Poppins' , sans-serif;
+}
+
+.container1{
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    padding: 2rem;
+    background-color: #fafafa;
+    /* overflow: hidden; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container1 header{
+    font-size: 30px;
+    padding:2rem 2rem 1rem 2rem;
+    color:#ffd;
+    background: #C8B946;
+}
+
+.myCard{
+    width:100%;
+    max-width: 820px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px 1px rgba(0,0,0,0.1);
+    background-color: #D1D1D1;
+    position: relative;
+    overflow: hidden;
+    z-index: 100;
+}
+.form-group{
+    padding-left: 2rem;
+    padding-right: 2rem;
+    position: relative;
+}
+.form-group :is(.myInput,.custom-selector select){
+    width: 80%;
+    height: 45px;
+    background: transparent;
+    color:#fff;
+    font-size: 20px;
+    padding-left: 1rem;
+    outline: none;
+    border:2px solid #fff;
+    border-radius: 25px;;
+}
+.form-group .question{
+    width: 80%;
+    font-size: 20px;
+}
+.form-group .Submit{
+    padding:0.5rem 1.5rem;
+    color:#F59B00;
+    background: transparent;
+    border:2px solid white;
+    border-radius: 25px;
+    cursor: pointer;
+}
+.form-group .label{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 125px;
+    color:white;
+    font-size: 20px;
+}
+.circle{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    /* background: linear-gradient(135deg, transparent 20%,#149279); */
+    background: linear-gradient(135deg, transparent 20%,#f2f2f2);
+    position: absolute;
+    z-index: 10;
+}
+
+.circle.one{
+    width:130px;
+    height:130px;
+    top:130px;
+    right:-40px;
+}
+
+.circle.two{
+    width:80px;
+    height:80px;
+    top:10px;
+    right:30px
+}
+
+.circle.three{
+    width: 300px;
+    height:300px;
+    background: transparent;
+    top:35%;
+    left:-10%;
+    /* border:20px solid #1abc9c; */
+    border:20px solid #D1D1D1;
+}
+
+.circle.four{
+    width: 350px;
+    height:350px;
+    background: transparent;
+    top:75%;
+    right:-10%;
+    /* border:20px solid #1abc9c; */
+    border:20px solid #D1D1D1;
+}
