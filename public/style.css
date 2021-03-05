@@ -24,7 +24,8 @@ header{
 }
 
 .container1 header{
-    font-size: 30px;
+    font-size: 40px;
+    font-weight: 700;
     padding:2rem 2rem 1rem 2rem;
     color:#ffd;
     background: #C8B946;
@@ -45,16 +46,22 @@ header{
     padding-right: 2rem;
     position: relative;
 }
+.form-group.first {
+    margin-top: 15px;
+}
 .form-group :is(.myInput,.custom-selector select){
     width: 80%;
     height: 45px;
     background: transparent;
-    color:#fff;
+    color:#000;
     font-size: 20px;
     padding-left: 1rem;
     outline: none;
-    border:2px solid #fff;
+    border:2px solid black;
     border-radius: 25px;;
+}
+.form-group .myInput::placeholder{
+    color:#000;
 }
 .form-group .question{
     width: 80%;
@@ -89,14 +96,14 @@ header{
 .circle.one{
     width:130px;
     height:130px;
-    top:130px;
+    top:230px;
     right:-40px;
 }
 
 .circle.two{
     width:80px;
     height:80px;
-    top:10px;
+    top:80px;
     right:30px
 }
 
