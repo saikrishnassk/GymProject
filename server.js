@@ -12,6 +12,10 @@ app.set("views",__dirname+"/views");
 
 app.get("/",(req,res)=>{
     res.render("index");
+});
+
+app.get("/feedback",(req,res)=>{
+    res.render("feedback");
 })
 
 const PORT = config.port; // OR const PORT = process.env.PORT;
