@@ -9,4 +9,4 @@ After downloading the files from git
 
 4. node server.js
 
-5. Now open local browser and type http://localhost:3000
+5. Now open local browser and type http://localhost:3000/feedback
