@@ -1,72 +1,3 @@
-// var btn = document.getElementById("yes_opt");
-// var btn1 = document.getElementById("no_opt");
-// var flag=true;
-// function addQuestion(ques,opt1,opt2,id1,id2){
-//     console.log(ques);
-//     console.log(opt1,opt2);
-//     var div1 = document.createElement("div");
-//     div1.classList.add("form-group");
-//     div1.classList.add("Custom1");
-
-//     var div2 = document.createElement("label");
-//     div2.textContent=ques;
-//     div1.appendChild(div2);
-
-//     div2 = document.createElement("br");
-//     div1.appendChild(div2);
-
-//     div2 = document.createElement("input");
-//     div2.setAttribute("type","radio");
-//     div2.setAttribute("id",id1);
-//     div2.name =ques;
-//     div1.appendChild(div2);
-
-//     div2 = document.createElement("label");
-//     div2.setAttribute("for",id1);
-//     div2.textContent = opt1;
-//     div1.appendChild(div2);
-
-//     div2 = document.createElement("input");
-//     div2.setAttribute("type","radio");
-//     div2.setAttribute("id",id2);
-//     div2.name = ques;
-//     div1.appendChild(div2);
-
-//     div2 = document.createElement("label");
-//     div2.setAttribute("for",id2);
-//     div2.textContent = opt2;
-//     div1.appendChild(div2);
-
-//     document.getElementsByClassName("myForm")[0].appendChild(div1);
-// }
-
-// btn.addEventListener("click",(event) =>{
-//     console.log(event);
-//     console.log("Clicked");
-//     if(flag){
-//         addQuestion("Sai Toesn't it ?","ans1","ans2","opt1_id1","opt1_id2");
-//         addQuestion("This is sample two ?","ans2","ans3","opt2_id1","opt2_id2")
-//         flag=false;
-//     }
-    
-// });
-
-// function removeQuestion(){
-//     var arr=document.getElementsByClassName("Custom1");
-//     console.log(arr);
-//     for(var i=arr.length-1;i>=0;i--){
-//         arr[i].remove();
-//     }
-// }
-// btn1.addEventListener("click",()=>{
-//     console.log("Came to no group");
-//     if(!flag){
-//         removeQuestion();
-//         flag=true;
-//     }
-// })
-
-
 var Form1 = document.getElementById("Form1");
 var Form2 = document.getElementById("Form2");
 var Form3 = document.getElementById("Form3");
@@ -76,11 +7,35 @@ var Next2 = document.getElementById("Next2");
 var Back1 = document.getElementById("Back1");
 var Back2 = document.getElementById("Back2");
 
+var Submit = document.getElementById("submit");
+
+var data={};
+
+function getRadioVal(form, name) {
+    var val = "";
+    // get list of radio buttons with specified name
+    var radios = form.elements[name];
+    
+    // loop through list of radio buttons
+    for (var i=0, len=radios.length; i<len; i++) {
+        if ( radios[i].checked ) { // radio checked?
+            val = radios[i].value; // if so, hold its value in val
+            break; // and break out of for loop
+        }
+    }
+    return val; // return value of checked radio or undefined if none checked
+}
+
 var progress = document.getElementById("progress");
 Next1.onclick = function(){
-    Form1.style.left = "-550px";
-    Form2.style.left = "40px";
-    progress.style.width = "320px";
+    if(ValidForm1()){
+        Form1.style.left = "-550px";
+        Form2.style.left = "40px";
+        progress.style.width = "320px";
+    }
+    else{
+        alert("Fill all mandatory blanks with *");
+    }
 }
 Back1.onclick = function(){
     Form1.style.left = "40px";
@@ -89,12 +44,108 @@ Back1.onclick = function(){
 }
 
 Next2.onclick = function(){
-    Form2.style.left = "-550px";
-    Form3.style.left = "40px";
-    progress.style.width = "480px";
+    if(ValidForm2()){
+        Form2.style.left = "-550px";
+        Form3.style.left = "40px";
+        progress.style.width = "480px";
+    }
+    else{
+        alert("Please answer all questions!");
+    }
 }
 Back2.onclick = function(){
     Form2.style.left = "40px";
     Form3.style.left = "550px";
     progress.style.width = "320px";
+}
+
+Submit.onclick = function(){
+    if(ValidForm3()){
+        console.log(data);
+        fetch("/feedback",{
+            method: 'POST',
+            headers:{
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+        window.location.replace("https://www.google.com");
+    }
+    else{
+        alert("Please answer all questions!");
+    }
+}
+
+function ValidForm1(){
+    var ele = document.getElementById("first-name").value;
+    if(ele === "") return false;
+    data["First Name"] = ele;
+    
+    ele = document.getElementById("last-name").value;
+    data["Last Name"] = ele;
+
+    ele = document.getElementById("email-id").value;
+    if(ele === "") return false;
+    data["Email Id"] = ele;
+
+    ele = document.getElementById("subscription-plan").value;
+    if(ele === "") return false;
+    data["Subscription Plan"] = ele;
+    console.log(data);
+    return true;
+}
+
+function ValidForm2(){
+    var ele = document.getElementById("question1").textContent;
+    data["Question1"] = ele;
+    
+    ele = getRadioVal(Form2,"yes_no1");
+    console.log(ele);
+    if(ele === "") return false;
+    data["Answer1"] = ele;
+
+    ele = document.getElementById("question2").textContent;
+    data["Question2"] = ele;
+
+    ele = getRadioVal(Form2,"yes_no2");
+    if(ele === "") return false;
+    data["Answer2"] = ele;
+
+    ele = document.getElementById("question3").textContent;
+    data["Question3"] = ele;
+
+    ele = getRadioVal(Form2,"yes_no3");
+    if(ele === "") return false;
+    data["Answer3"] = ele;
+
+    console.log(data);
+    return true;
+}
+
+
+function ValidForm3(){
+    var ele = document.getElementById("question4").textContent;
+    data["Question4"] = ele;
+    
+    ele = getRadioVal(Form3,"yes_no4");
+    console.log(ele);
+    if(ele === "") return false;
+    data["Answer4"] = ele;
+
+    ele = document.getElementById("question5").textContent;
+    data["Question5"] = ele;
+
+    ele = getRadioVal(Form3,"yes_no5");
+    if(ele === "") return false;
+    data["Answer5"] = ele;
+
+    ele = document.getElementById("question6").textContent;
+    data["Question6"] = ele;
+
+    ele = getRadioVal(Form3,"yes_no6");
+    if(ele === "") return false;
+    data["Answer6"] = ele;
+    
+    console.log(data);
+    return true;
 }

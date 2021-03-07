@@ -16,6 +16,11 @@ app.get("/",(req,res)=>{
 
 app.get("/feedback",(req,res)=>{
     res.render("feedback");
+});
+
+app.post("/feedback",(req,res)=>{
+    console.log(req.body);
+    res.render("index");
 })
 
 const PORT = config.port; // OR const PORT = process.env.PORT;

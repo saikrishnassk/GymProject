@@ -5,22 +5,52 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="style.css" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" integrity="sha512-HK5fgLBL+xu6dm/Ii3z4xhlSUyZgTT9tuc/hSrtw6uzJOvgRr2a9jyxxT1ely+B+xFAmJKVSTbpM/CuL7qxO8w==" crossorigin="anonymous" />
+    <link rel="stylesheet" type="text/css" href="/style.css">
 </head>
 <body>
+    <span class="circle three"></span>
+    <span class="circle four"></span>
     <div class="container">
         <form action="" id="Form1">
             <h3>Feedback</h3>
-            <input type="text" placeholder="First Name" required>
-            <input type="text" placeholder="Last Name" >
-            <input type="email" placeholder="Email" required>
-            <input type="text" placeholder="Phone Number" required>
+            <div class="form-group">
+                <div class="palceholder">
+                    <label for="name">First Name</label>
+                    <span class="star">*</span>
+                </div>
+                <input type="text" class="form-control-custom" id="first-name" required>
+            </div>
+            <div class="form-group">
+                <div class="palceholder">
+                    <label for="name">Last Name</label>
+                </div>
+                <input type="text" class="form-control-custom" id="last-name" required>
+            </div>
+            <!-- <input type="text" placeholder="Last Name" > -->
+            <div class="form-group">
+                <div class="palceholder">
+                    <label for="name">Email</label>
+                    <span class="star">*</span>
+                </div>
+                <input type="text" class="form-control-custom" id="email-id" required>
+            </div>
+            <!-- <input type="email" placeholder="Email" required> -->
+            <div class="form-group">
+                <div class="palceholder">
+                    <label for="name">Phone Number</label>
+                    <span class="star">*</span>
+                </div>
+                <input type="text" class="form-control-custom" id="phone-number" required>
+            </div>
+            <!-- <input type="text" placeholder="Phone Number" required> -->
             <div class="custom-selector">
-                <select>
-                    <option value="">Subscription Plan</option>
-                    <option value="">1 Month Plan</option>
-                    <option value="">3 Month Plan</option>
-                    <option value="">6 Month Plan</option>
+                <select id="subscription-plan">
+                    <option value="">Subscription Plan<span class="star">*</span></option>
+                    <option value="1 Month Plan">1 Month Plan</option>
+                    <option value="3 Month Plan">3 Month Plan</option>
+                    <option value="6 Month Plan">6 Month Plan</option>
                 </select>
             </div>
             <div class="btn-box">
@@ -30,28 +60,24 @@
 
         <form action="" id="Form2">
             <h3>Have you experienced any of the following symptoms in the past 48 hours?</h3>
-            <label class="question">
-                Fever or Chills or Cough
-            </label><br>
-            <input type="radio" id="yes_opt1" name="yes_no1" required>
+            <label class="question" id="question1">Fever or Chills or Cough</label><br>
+            <input type="radio" id="yes_opt1" name="yes_no1" value="Yes" required>
             <label for="yes_opt1">Yes</label>
-            <input type="radio" id="no_opt1" name="yes_no1">
+            <input type="radio" id="no_opt1" name="yes_no1" value="No">
             <label for="no_opt1">No</label>
-            <br>
-            <label class="question">
-                Shortness of breathing or difficulty breathing
-            </label><br>
-            <input type="radio" id="yes_opt2" name="yes_no2" required>
+            <br><br>
+
+            <label class="question" id="question2">Shortness of breathing or difficulty breathing</label><br>
+            <input type="radio" id="yes_opt2" name="yes_no2" value="Yes" required>
             <label for="yes_opt2">Yes</label>
-            <input type="radio" id="no_opt2" name="yes_no2">
+            <input type="radio" id="no_opt2" name="yes_no2" value="No">
             <label for="no_opt2">No</label>
-            <br>
-            <label class="question">
-                fatigue, muscle or body aches, headache
-            </label><br>
-            <input type="radio" id="yes_opt3" name="yes_no3" required>
+            <br><br>
+
+            <label class="question" id="question3">fatigue, muscle or body aches, headache</label><br>
+            <input type="radio" id="yes_opt3" name="yes_no3" value="Yes" required>
             <label for="yes_opt3">Yes</label>
-            <input type="radio" id="no_opt3" name="yes_no3">
+            <input type="radio" id="no_opt3" name="yes_no3" value="No">
             <label for="no_opt3">No</label>
 
             <div class="btn-box">
@@ -60,32 +86,30 @@
             </div>
         </form>
 
-        <form action="www.google.com" id="Form3">
+        <form action="" id="Form3" onsubmit="">
             <h3>Survey</h3>
-            <label class="question">
-                loss of taste or smell, sore throat, congestion or runny nose, nausea or vomiting, diarrhea
-            </label><br>
-            <input type="radio" id="yes_opt4" name="yes_no4" required>
+            <label class="question" id="question4">loss of taste or smell, sore throat, congestion or runny nose, nausea or vomiting, diarrhea</label><br>
+            <input type="radio" id="yes_opt4" name="yes_no4" value="Yes" required>
             <label for="yes_opt4">Yes</label>
-            <input type="radio" id="no_opt4" name="yes_no4">
+            <input type="radio" id="no_opt4" name="yes_no4" value="No">
             <label for="no_opt4">No</label>
-            <br>
-            
-            <label class="question">Have you had close contact with a laboratory confirmed case of COVID-19 in the last 14 days?</label><br>
-            <input type="radio" id="yes_opt5" name="yes_no5" required>
-            <label for="yes_opt5">Yes</label>
-            <input type="radio" id="no_opt5" name="yes_no5">
-            <label for="no_opt5">No</label>
-            <br>
+            <br><br>
 
-            <label class="question">Was your daily temperature self-screening greater than 100.4 degrees fahrenheit?</label><br>
-            <input type="radio" id="yes_opt6" name="yes_no6" required>
+            <label class="question" id="question5">Have you had close contact with a laboratory confirmed case of COVID-19 in the last 14 days?</label><br>
+            <input type="radio" id="yes_opt5" name="yes_no5" value="Yes" required>
+            <label for="yes_opt5">Yes</label>
+            <input type="radio" id="no_opt5" name="yes_no5" value="No">
+            <label for="no_opt5">No</label>
+            <br><br>
+
+            <label class="question" id="question6">Was your daily temperature self-screening greater than 100.4 degrees fahrenheit?</label><br>
+            <input type="radio" id="yes_opt6" name="yes_no6" value="Yes" required>
             <label for="yes_opt6">Yes</label>
-            <input type="radio" id="no_opt6" name="yes_no6">
+            <input type="radio" id="no_opt6" name="yes_no6" value="No">
             <label for="no_opt6">No</label>
             <div class="btn-box">
                 <button type="button" id="Back2">Back</button>
-                <button type="submit">Submit</button>
+                <button type="button" id="submit">Submit</button>
             </div>
         </form>
 
@@ -97,5 +121,23 @@
         </div>
     </div>
     <script src="index.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script>
+
+$('.palceholder').click(function() {
+    $(this).siblings('input').focus();
+  });
+  $('.form-control-custom').focus(function() {
+    $(this).siblings('.palceholder').hide();
+  });
+  $('.form-control-custom').blur(function() {
+    var $this = $(this);
+    if ($this.val().length == 0)
+      $(this).siblings('.palceholder').show();
+  });
+  $('.form-control-custom').blur();
+</script>
 </body>
 </html>
