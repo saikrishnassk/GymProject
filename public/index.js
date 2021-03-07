@@ -77,18 +77,18 @@ Submit.onclick = function(){
 }
 
 function ValidForm1(){
-    var ele = document.getElementById("first-name").value;
+    var ele = document.getElementById("first-name").value.trim();
     if(ele === "") return false;
     data["First Name"] = ele;
     
-    ele = document.getElementById("last-name").value;
+    ele = document.getElementById("last-name").value.trim();
     data["Last Name"] = ele;
 
-    ele = document.getElementById("email-id").value;
+    ele = document.getElementById("email-id").value.trim();
     if(ele === "") return false;
     data["Email Id"] = ele;
 
-    ele = document.getElementById("subscription-plan").value;
+    ele = document.getElementById("subscription-plan").value.trim();
     if(ele === "") return false;
     data["Subscription Plan"] = ele;
     console.log(data);
