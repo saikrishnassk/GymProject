@@ -81,7 +81,17 @@
   #sq-card-number {
     margin-bottom: 16px;
   }
-  
+  #payment-amount{
+      box-sizing: border-box;
+      width: 100%;
+      height: 56px;
+      margin-bottom: 16px;
+      border: 1px solid #E0E2E3;
+      background-color: white;
+      border-radius: 6px;
+      padding: 16px;
+      font-size: 16px;
+  }
   /* Customize the "Pay with Credit Card" button */
   .button-credit-card {
     width: 100%;

@@ -51,7 +51,7 @@
         }
         //TODO: Replace alert with code in step 2.1
         //$('#Amount').val()
-        // var amount = document.getElementById("Amount-custom").value;
+        var amount = document.getElementById("payment-amount").value;
         fetch('process-payment', {
 method: 'POST',
 headers: {
@@ -59,7 +59,7 @@ headers: {
 'Content-Type': 'application/json'
 },
 body: JSON.stringify({
-// amount:amount,
+amount:amount,
 nonce: nonce,
 idempotency_key: idempotency_key,
 location_id: "L8M4338DZF0SW"

@@ -47,7 +47,7 @@ const client = new Client({
     const requestBody = {
       sourceId: requestParams.nonce,
       amountMoney: {
-        amount: 100, // $1.00 charge
+        amount: 100*requestParams.amount, // $1.00 charge
         currency: 'USD'
       },
       locationId: requestParams.location_id,
