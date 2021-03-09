@@ -1,0 +1,235 @@
+.field {
+    padding: 1rem;
+    margin-bottom: 0 !important;
+}
+
+.navbar {
+    background-color: white;
+}
+a.navbar-item:hover{
+    background-color: #C8B946;
+    border-radius: 15px;
+    padding-top: 8px;
+    /*color: #C8B946;*/
+}
+
+.emp-name, .gym {
+    font-weight: 500;
+    color: #C8B946;
+    padding-top: 1rem;
+}
+
+.emp-name:hover {
+    background-color: #dbdbdb !important;
+    color: black !important;
+}
+
+.wvgo:hover {
+    background-color: #dbdbdb !important;
+    color: #F59B00 !important;
+}
+
+.button.is-info {
+    background-color: #F59B00;
+}
+
+.button.is-info:hover {
+    background-color: #F59B00;
+}
+
+.section {
+    padding: 1rem 1.5rem;
+}
+
+.submit-button-bar {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    background-color: #F59B00;
+    z-index: 10;
+    height: 4rem;
+    text-align: center;
+    padding-top: 1rem;
+    overflow-y: scroll;
+}
+
+.submit-button-bar a {
+    width: 100%;
+    transition: all 0.3s ease;
+    color: white;
+    font-size: 24px;
+    font-weight: 100;
+}
+
+.label {
+    font-weight: 500;
+}
+
+.m-xs {
+    margin: 5px;
+}
+
+.font-extra-bold {
+    font-weight: 100;
+}
+
+.text-success {
+    color: #050803;
+}
+
+h1, .h1 {
+    font-size: 30px;
+}
+
+.hpanel {
+    border: 0;
+    box-shadow: none;
+    margin-bottom: 25px;
+}
+
+.hpanel .panel-body {
+    background: #fff;
+    border-radius: 5px;
+    padding: 1rem;
+    position: relative;
+    text-align: center;
+}
+
+.sales-history-table, .void-history-table {
+    font-size: 0.75rem;
+}
+
+.sorting, .sorting_asc, .sorting_desc {
+    background-image: none !important;
+}
+
+.paginate_button {
+    background: none !important;
+    border: none !important;
+}
+
+.table.dataTable.no-footer {
+    border: none;
+}
+
+.dataTables_wrapper {
+    font-size: 0.75rem;
+    padding-top: 1rem;
+}
+
+.employee-img {
+    display: none;
+    border-radius: 100%;
+    height: 2rem;
+    margin: 1rem;
+
+}
+
+.search-headers {
+    border: none;
+}
+
+.search-headers:focus, .search-headers:focus-within {
+    outline: none;
+}
+
+table.dataTable thead th {
+    border-bottom: 1px solid #dbdbdb;
+    border-width: 0 0 2px;
+}
+
+.dataTables_filter input {
+    border: 2px solid #dbdbdb;
+}
+
+#overlay {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #babababa;
+    z-index: 100;
+    cursor: progress;
+}
+
+.lds {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 50%;
+    left: 45%;
+    z-index: 2;
+}
+
+.lds div {
+    position: absolute;
+    width: 17px;
+    background: #F59B00;
+    animation: lds 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+}
+
+.lds div:nth-child(1) {
+    animation-delay: -0.24s;
+}
+
+.lds div:nth-child(2) {
+    left: 20px;
+    animation-delay: -0.12s;
+}
+
+.lds div:nth-child(3) {
+    left: 40px;
+    animation-delay: 0s;
+}
+
+@keyframes lds {
+    0% {
+        top: 6px;
+        height: 100px;
+    }
+
+    50%, 100% {
+        top: 19px;
+        height: 50px;
+    }
+}
+
+@media screen and (min-width: 769px) {
+    .submit-button-bar {
+        display: none;
+    }
+
+    .button.is-info {
+        display: block;
+    }
+
+    .navbar-brand {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 769px) {
+    .submit-button-bar {
+        display: block;
+    }
+
+    .field-wrap {
+        padding-bottom: 10rem;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    .button.is-info {
+        display: none;
+    }
+
+    .navbar-brand {
+        display: block;
+    }
+}

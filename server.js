@@ -20,6 +20,13 @@ app.get("/",(req,res)=>{
     res.render("index");
 });
 
+app.get("/self_assessment",(req,res)=>{
+    res.render("self_assessment");
+});
+app.get("/request_form",(req,res)=>{
+    res.render("request_form");
+});
+
 app.get("/feedback",(req,res)=>{
     res.render("feedback");
 });
