@@ -4,6 +4,7 @@ require('dotenv').config();
 const app = express();
 const bodyParser = require('body-parser');
 const { Client, Environment, ApiError } = require('square');
+const moment  = require('moment');
 
 
 app.use(bodyParser.json());
@@ -24,7 +25,7 @@ app.get("/self_assessment",(req,res)=>{
     res.render("self_assessment");
 });
 app.get("/request_form",(req,res)=>{
-    res.render("request_form");
+    res.render("request_form", {moment: moment});
 });
 
 app.get("/feedback",(req,res)=>{
