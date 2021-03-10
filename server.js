@@ -6,6 +6,7 @@ require('dotenv').config();
 const app = express();
 const bodyParser = require('body-parser');
 const { Client, Environment, ApiError } = require('square');
+const moment  = require('moment');
 
 const accountSid = 'ACb88e41a85ce90b2eb05a4aeb8e406377'; 
 const authToken = '7259b9d5b5812c033b24addc79c3f3ea'; 
@@ -91,10 +92,14 @@ app.get("/self_assessment",(req,res)=>{
     res.render("self_assessment");
 });
 app.get("/request_form",(req,res)=>{
+<<<<<<< HEAD
     RequestForm.find({}).then(data =>{
         console.log(data);
     })
     res.render("request_form");
+=======
+    res.render("request_form", {moment: moment});
+>>>>>>> e7d3bdf8a7b5e1da3f5ddaf8d545108dc30f67d1
 });
 
 app.get("/feedback",(req,res)=>{
