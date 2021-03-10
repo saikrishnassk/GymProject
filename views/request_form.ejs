@@ -64,43 +64,57 @@
                 <h1 style="margin-top: 1rem;"><span class="font-extra-bold no-margins text-success" style="float: left;"> Request Info</span></h1>
             </div>
         </div>
-        <form id="daily_assessment" style="margin-top: 1rem">
+        <form action="request_form" method="POST" id="daily_assessment" style="margin-top: 1rem">
             <div class="field-wrap">
 
                 <div class="field">
                     <label class="label is-small">First Name</label>
                     <div class="control has-icons-left">
-                        <input id="first_name" class="input is-info is-small" type="text" >
+                        <input id="first_name" class="input is-info is-small" type="text" name="FirstName" required>
                         <span class="icon is-left"><i class="far fa-circle"></i></span>
                     </div>
                 </div>
                 <div class="field" >
                     <label class="label is-small">Last Name</label>
                     <div class="control has-icons-left">
-                        <input id="last_name" class="input is-info is-small" type="text" >
+                        <input id="last_name" class="input is-info is-small" type="text" name="LastName">
                         <span class="icon is-left"><i class="far fa-circle"></i></span>
                     </div>
                 </div>
                 <div class="field">
                     <label class="label is-small">Email</label>
                     <div class="control has-icons-left">
-                        <input id="email" class="input is-info is-small" type="text" >
+                        <input id="email" class="input is-info is-small" type="text" name="Email" required>
+                        <span class="icon is-left"><i class="far fa-circle"></i></span>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label is-small">Date</label>
+                    <div class="control has-icons-left">
+                        <input id="email" class="input is-info is-small" type="date" name="date" required>
+                        <span class="icon is-left"><i class="far fa-circle"></i></span>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label is-small">Time</label>
+                    <div class="control has-icons-left">
+                        <input id="email" class="input is-info is-small" type="time" name="time" required>
                         <span class="icon is-left"><i class="far fa-circle"></i></span>
                     </div>
                 </div>
                 <div class="field">
                     <label class="label is-small">Description</label>
                     <div class="control has-icons-left">
-                        <textarea id="description" class="input is-info is-small" ></textarea>
+                        <textarea id="description" class="input is-info is-small" name="Description"></textarea>
                         <span class="icon is-left"><i class="far fa-sticky-note"></i></span>
                     </div>
                 </div>
             </div>
 
-            <button id="submit-btn" type="button" class="button is-info is-fullwidth">Submit</button>
+            <button id="submit-btn" type="submit" class="button is-info is-fullwidth">Submit</button>
 
             <div id="submit-btn-bar" class="submit-button-bar">
-                <a class="" href="<?php echo base_url('Home/new_sale'); ?>">Submit</a>
+                <button class="" type="submit">Submit</button>
             </div>
         </form>
     </div>

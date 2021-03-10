@@ -55,36 +55,36 @@
                 <h1 style="margin-top: 1rem;"><span class="font-extra-bold no-margins text-success" style="float: left;"> Health Self-Assessment</span></h1>
             </div>
         </div>
-        <form id="daily_assessment" style="margin-top: 1rem">
+        <form action="self_assis" method="POST" id="daily_assessment" style="margin-top: 1rem">
             <div class="field-wrap">
                 <div class="field main-3">
                     <label class="label">Have you experienced any of the following symptoms in the past 48 hours:
                         Fever or Chills, Cough, Shortness of breathing or difficulty breathing, fatigue, muscle or body aches, headache, loss of taste or smell, sore throat, congestion or runny nose, nausea or vomiting, diarrhea
                     </label>
                     <div class="control has-icons-left">
-                        <label class="radio"><input type="radio" name="q1_yes" value="Yes"> Yes</label><label class="radio"><input type="radio" name="q1_yes" value="No"> No</label>
+                        <label class="radio"><input type="radio" name="q1_yes" value="Yes" required> Yes</label><label class="radio"><input type="radio" name="q1_yes" value="No"> No</label>
                     </div>
                 </div>
                 <div class="field main-3">
                     <label class="label">Have you had close contact with a laboratory confirmed case of COVID-19 in the last 14 days?
                     </label>
                     <div class="control has-icons-left">
-                        <label class="radio"><input type="radio" name="q2_yes" value="Yes"> Yes</label><label class="radio"><input type="radio" name="q2_yes" value="No"> No</label>
+                        <label class="radio"><input type="radio" name="q2_yes" value="Yes" required> Yes</label><label class="radio"><input type="radio" name="q2_yes" value="No"> No</label>
                     </div>
                 </div>
                 <div class="field main-3">
                     <label class="label">Was your daily temperature self-screening greater than 100.4 degrees fahrenheit?
                     </label>
                     <div class="control has-icons-left">
-                        <label class="radio"><input type="radio" name="q3_yes" value="Yes"> Yes</label><label class="radio"><input type="radio" name="q3_yes" value="No"> No</label>
+                        <label class="radio"><input type="radio" name="q3_yes" value="Yes" required> Yes</label><label class="radio"><input type="radio" name="q3_yes" value="No"> No</label>
                     </div>
                 </div>
             </div>
 
-            <button id="submit-btn" type="button" class="button is-info is-fullwidth">Submit</button>
+            <button id="submit-btn" type="submit" class="button is-info is-fullwidth">Submit</button>
 
             <div id="submit-btn-bar" class="submit-button-bar">
-                <a class="" href="<?php echo base_url('Home/new_sale'); ?>">Submit</a>
+                <button class="" type="submit">Submit</button>
             </div>
         </form>
     </div>

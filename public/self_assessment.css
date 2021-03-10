@@ -49,16 +49,21 @@ a.navbar-item:hover{
     z-index: 10;
     height: 4rem;
     text-align: center;
-    padding-top: 1rem;
+    /* padding-top: 1rem; */
     overflow-y: scroll;
 }
 
-.submit-button-bar a {
+.submit-button-bar button {
     width: 100%;
     transition: all 0.3s ease;
     color: white;
     font-size: 24px;
-    font-weight: 100;
+    font-weight: 500;
+    height: 100%;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    
 }
 
 .label {
