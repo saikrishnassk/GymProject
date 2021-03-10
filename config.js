@@ -1,7 +1,11 @@
 require('dotenv').config();
 
-const {PORT,HOST} = process.env;
+const {PORT,ACCOUNTSID,AUTHTOKEN,MONGODB_URL,SQUARE_ACCESS_TOKEN} = process.env;
 console.log(PORT);
 module.exports = {
-    port : PORT
+    port : PORT,
+    accountSid : ACCOUNTSID,
+    authToken : AUTHTOKEN,
+    mongodb_url : MONGODB_URL,
+    sqaure_access_token : SQUARE_ACCESS_TOKEN
 };

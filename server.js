@@ -7,13 +7,13 @@ const app = express();
 const bodyParser = require('body-parser');
 const { Client, Environment, ApiError } = require('square');
 
-const accountSid = 'ACb88e41a85ce90b2eb05a4aeb8e406377'; 
-const authToken = '7259b9d5b5812c033b24addc79c3f3ea'; 
+const accountSid = `${config.accountSid}`; 
+const authToken = `${config.authToken}`; 
 const clientMsg = require('twilio')(accountSid, authToken); 
  
 mongoose.set('useFindAndModify', false);
 // const URI ="mongodb+srv://user1:user1@cluster0.fsrgc.mongodb.net/DBA_Project?retryWrites=true&w=majority"
-const URI ="mongodb://user1:user1@cluster0-shard-00-00.fsrgc.mongodb.net:27017,cluster0-shard-00-01.fsrgc.mongodb.net:27017,cluster0-shard-00-02.fsrgc.mongodb.net:27017/DBA_Project?ssl=true&replicaSet=atlas-eo925u-shard-0&authSource=admin&retryWrites=true&w=majority"
+const URI =`${config.mongodb_url}`
 
 const connectDB = async () =>{
     await mongoose.connect(URI,{ useUnifiedTopology: true,useNewUrlParser: true });
@@ -78,7 +78,7 @@ app.use(express.static(__dirname+"/public"));
 app.set("view engine","ejs");
 app.set("views",__dirname+"/views");
 
-const accessToken = 'EAAAEEKvBjZ0AxwD0iM0eIIKtx8UvONW8rCAZQvPFARnD6iB4xKXUCKMJPG33jOB';
+const accessToken = `${config.sqaure_access_token}`;
 
 app.get("/",(req,res)=>{
     res.render("index");
