@@ -14,13 +14,9 @@
     "dotenv": "^8.2.0",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
-<<<<<<< HEAD
     "mongoose": "^5.11.19",
     "square": "^7.0.0",
     "twilio": "^3.57.0"
-=======
-    "moment": "^2.29.1",
-    "square": "^7.0.0"
->>>>>>> e7d3bdf8a7b5e1da3f5ddaf8d545108dc30f67d1
+
   }
 }
