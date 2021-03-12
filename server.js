@@ -12,18 +12,36 @@ const authToken = `${config.authToken}`;
 const clientMsg = require('twilio')(accountSid, authToken); 
  
 mongoose.set('useFindAndModify', false);
-// const URI ="mongodb+srv://user1:user1@cluster0.fsrgc.mongodb.net/DBA_Project?retryWrites=true&w=majority"
-const URI =`${config.mongodb_url}`
+// const URI ='mongodb+srv://user1:user1@cluster0.fsrgc.mongodb.net/DBA_Project?retryWrites=true&w=majority'
+const URI =`${config.mongodb_url}`;
 
 const connectDB = async () =>{
     await mongoose.connect(URI,{ useUnifiedTopology: true,useNewUrlParser: true });
-    console.log("db connected..!");
+    console.log('db connected..!');
 };
 connectDB();
 
 function ToCapitalize(arr){
   if(arr==='' || arr==undefined) return '';
   return arr.charAt(0).toUpperCase()+arr.slice(1);
+}
+
+function CreateTextMessage(data){
+    if(data){
+        clientMsg.messages
+            .create({
+                body: `Hi Phani, 
+                \n${data.FirstName}, ${data.LastName} has signed in for a ${data.Time} Appointment on ${data.Date}`,
+                messagingServiceSid: 'MG5f300a9b2c0727c5ca3ed70d84ff9eb7',
+                to: '+12483257855'
+            })
+            .then(message => console.log(message.sid))
+            .done();
+        return 'true';
+    }
+    else {
+        return 'false';
+    }
 }
 
 const selfAssessmentSchema = new mongoose.Schema({
@@ -74,78 +92,69 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
-app.use(express.static(__dirname+"/public"));
-app.set("view engine","ejs");
-app.set("views",__dirname+"/views");
+app.use(express.static(__dirname+'/public'));
+app.set('view engine','ejs');
+app.set('views',__dirname+'/views');
 
 const accessToken = `${config.sqaure_access_token}`;
 
-app.get("/",(req,res)=>{
-    res.render("index");
+app.get('/',(req,res)=>{
+    res.render('index');
 });
 
-app.get("/self_assessment",(req,res)=>{
+app.get('/self_assessment',(req,res)=>{
     SelfAssess.find({}).then(data =>{
         console.log(data);
-    })
-    res.render("self_assessment");
+    });
+    res.render('self_assessment');
 });
-app.get("/request_form",(req,res)=>{
+app.get('/request_form',(req,res)=>{
     RequestForm.find({}).then(data =>{
-        console.log(data);
-    })
-    res.render("request_form");
+    });
+    res.render('request_form');
 });
 
-app.get("/feedback",(req,res)=>{
-    res.render("feedback");
+app.get('/feedback',(req,res)=>{
+    res.render('feedback');
 });
 
-app.post("/feedback",(req,res)=>{
-    console.log(req.body);
-    res.render("index");
+app.post('/feedback',(req,res)=>{
+    res.render('index');
 });
-app.post("/self_assis",async (req,res)=>{
-    console.log(req.body["q1_yes"]);
-    let ele = {};
-    console.log(dateTime());
-    ele.FirstName = 'sai';
-    ele.LastName = 'Krishna';
+app.post('/self_assis',async (req,res)=>{
+
+    let data = {};
+
+    data.FirstName = 'sai';
+    data.LastName = 'Krishna';
     const questions = ['Have you experienced any of the following symptoms in the past 48 hours: Fever or Chills, Cough, Shortness of breathing or difficulty breathing, fatigue, muscle or body aches, headache, loss of taste or smell, sore throat, congestion or runny nose, nausea or vomiting, diarrhe','Have you had close contact with a laboratory confirmed case of COVID-19 in the last 14 days?','Was your daily temperature self-screening greater than 100.4 degrees fahrenheit?'];
-    const answers = [req.body["q1_yes"],req.body["q2_yes"],req.body["q3_yes"]];
-    ele.Questions = questions;
-    ele.Answers = answers;
-    ele.TimeStamp = dateTime();
-    let SelfAssessModel = new SelfAssess(ele);
+    const answers = [req.body['q1_yes'],req.body['q2_yes'],req.body['q3_yes']];
+    data.Questions = questions;
+    data.Answers = answers;
+    data.TimeStamp = dateTime();
+    let SelfAssessModel = new SelfAssess(data);
     await SelfAssessModel.save();
-    res.redirect("self_assessment");
+    res.redirect('self_assessment');
 });
-app.post("/request_form",async (req,res)=>{
-    console.log(req.body);
-    let ele={};
-    ele["FirstName"] = ToCapitalize(req.body["FirstName"]);
-    ele["LastName"] = ToCapitalize(req.body["LastName"]);
-    ele["Email"] = req.body["Email"];
-    ele["Date"] = req.body["date"];
-    ele["Time"] = req.body["time"];
-    ele["Description"] = req.body["Description"];
-    ele["TimeStamp"] = dateTime();
-    let RequestFormModel = new RequestForm(ele);
+app.post('/request_form',async (req,res)=>{
+
+    let data={};
+    data['FirstName'] = ToCapitalize(req.body['FirstName']);
+    data['LastName'] = ToCapitalize(req.body['LastName']);
+    data['Email'] = req.body['Email'];
+    data['Date'] = req.body['date'];
+    data['Time'] = req.body['time'];
+    data['Description'] = req.body['Description'];
+    data['TimeStamp'] = dateTime();
+    let RequestFormModel = new RequestForm(data);
     await RequestFormModel.save();
-    console.log(ele.Time);
-    clientMsg.messages 
-      .create({ 
-         body: `Hi Phani, \n${ele.FirstName}, ${ele.LastName} has signed in for a ${ele.Time} Appointment on ${ele.Date}`,  
-         messagingServiceSid: 'MG5f300a9b2c0727c5ca3ed70d84ff9eb7',      
-         to: '+12483257855' 
-       }) 
-      .then(message => console.log(message.sid)) 
-      .done();
-    res.redirect("request_form");
+
+    CreateTextMessage(data);
+    res.redirect('request_form');
 });
 
-app.get("/payment",(req,res)=>{
-    res.render("payment");
+app.get('/payment',(req,res)=>{
+    res.render('payment');
 });
 const client = new Client({
     environment: Environment.Sandbox,
@@ -156,7 +165,7 @@ const client = new Client({
     const requestParams = req.body;
   
     // Charge the customer's card
-    console.log("Came here");
+    console.log('Came here');
     console.log(client.paymentsApi,requestParams.nonce,requestParams);
     const paymentsApi = client.paymentsApi;
     const requestBody = {
@@ -170,9 +179,7 @@ const client = new Client({
     };
   
     try {
-        console.log("HaHasa");
       const response = await paymentsApi.createPayment(requestBody);
-      console.log("Came here successfully");
       res.status(200).json({
         'title': 'Payment Successful',
         'result': response.result
@@ -180,7 +187,7 @@ const client = new Client({
     } catch(error) {
       let errorResult = null;
       if (error instanceof ApiError) {
-          console.log("here");
+          console.log('here');
         errorResult = error.errors;
       } else {
         errorResult = error;
@@ -196,4 +203,4 @@ const client = new Client({
 const PORT = config.port; // OR const PORT = process.env.PORT;
 app.listen(PORT,()=>{
     console.log(`Connected on ${PORT}`);
-})
+});

@@ -3,13 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Daily Health Assessment</title>
+    <title>Request Form</title>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
     <link rel="stylesheet" type="text/css"  href="/buttons.dataTables.min.css">
     <link rel="stylesheet"  href="/self_assessment.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
@@ -20,6 +21,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js" integrity="sha512-rmZcZsyhe0/MAjquhTgiUcb4d9knaFc7b5xAfju483gbEXTkeJRUMIPk6s3ySZMYUHEcjKbjLjyddGWMrNEvZg==" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
     <script src="/js/jquery.dataTables.min.js"></script>
     <script src="/js/dataTables.buttons.min.js"></script>
     <script src="/js/buttons.flash.min.js"></script>
@@ -36,27 +38,72 @@
     .is-info.input:active, .is-info.input:focus {
         box-shadow: 0 0 0 0.125em rgb(200, 185, 70);
     }
-    .field.has-addons{
-        padding-left: 2px;
-        padding-right: 2px;
+    /*.field.has-addons{*/
+    /*    padding-left: 2px;*/
+    /*    padding-right: 2px;*/
+    /*}*/
+    .ui-timepicker-standard a {
+        font-size: 14px;
+    }
+    .ui-timepicker-standard .ui-state-hover {
+        background-color: #C8B946;
+        border: 1px solid #C8B946;
     }
 </style>
 <body>
+<!--<nav class="navbar" role="navigation" aria-label="main navigation">-->
+<!--    <div class="navbar-brand">-->
+<!--        <div class="container">-->
+<!--            <a class="navbar-item gym" href="https://www.pushthelimitfit.com/">-->
+<!--                < GYM-->
+<!--            </a>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="navbar-menu">-->
+<!--        <div class="container">-->
+<!--            <div class="navbar-end">-->
+<!--                <a class="navbar-item gym" href="https://www.pushthelimitfit.com/">-->
+<!--                < GYM-->
+<!--                </a>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</nav>-->
 <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
-        <div class="container">
-            <a class="navbar-item gym" href="https://www.pushthelimitfit.com/">
-                < GYM
-            </a>
-        </div>
+        <a class="navbar-item" href="">
+            <img src="" width="140">
+        </a>
+
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
     </div>
-    <div class="navbar-menu">
-        <div class="container">
-            <div class="navbar-end">
-                <a class="navbar-item gym" href="https://www.pushthelimitfit.com/">
-                < GYM
-                </a>
-            </div>
+
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+        </div>
+
+        <div class="navbar-end">
+            <a class="navbar-item announcements" href="https://www.pushthelimitfit.com/">
+                Home
+            </a>
+            <a class="navbar-item announcements" href="https://www.pushthelimitfit.com/the-gym">
+                About
+            </a>
+            <a class="navbar-item current-page" href="https://www.pushthelimitfit.com/training">
+                Training
+            </a>
+            <a class="navbar-item current-page" href="https://www.pushthelimitfit.com/ptl-fit-camp">
+                Fit Camp
+            </a>
+
+            <a class="navbar-item current-page" href="https://www.pushthelimitfit.com/contact">
+                Contact
+            </a>
+
         </div>
     </div>
 </nav>
@@ -74,57 +121,58 @@
                 <div class="field">
                     <label class="label is-small">First Name</label>
                     <div class="control has-icons-left">
-                        <input id="first_name" class="input is-info is-small" type="text" name="FirstName" required>
+                        <input id="first_name" class="input is-info is-small" type="text" placeholder="First Name" name="FirstName" >
                         <span class="icon is-left"><i class="far fa-circle"></i></span>
                     </div>
                 </div>
                 <div class="field" >
                     <label class="label is-small">Last Name</label>
                     <div class="control has-icons-left">
-                        <input id="last_name" class="input is-info is-small" type="text" name="LastName">
+                        <input id="last_name" class="input is-info is-small" type="text" placeholder="Last Name" name="LastName">
                         <span class="icon is-left"><i class="far fa-circle"></i></span>
                     </div>
                 </div>
                 <div class="field">
                     <label class="label is-small">Email</label>
                     <div class="control has-icons-left">
-                        <input id="email" class="input is-info is-small" type="text" name="Email" required>
+                        <input id="email" class="input is-info is-small" type="text" placeholder="Email" name="Email" >
                         <span class="icon is-left"><i class="far fa-circle"></i></span>
                     </div>
                 </div>
                 <div class="field">
                     <label class="label is-small">Date</label>
                     <div class="control has-icons-left">
-                        <input id="email" class="input is-info is-small" type="date" name="date" required>
-                        <span class="icon is-left"><i class="far fa-circle"></i></span>
+                        <input id="form_date" class="input is-info is-small" placeholder="MM-DD-YYYY" type="text" name="date" >
+                        <span class="icon is-left"><i class="far fa-calendar-alt"></i></span>
                     </div>
                 </div>
                 <div class="field">
                     <label class="label is-small">Time</label>
                     <div class="control has-icons-left">
-                        <input id="email" class="input is-info is-small" type="time" name="time" required>
-                        <span class="icon is-left"><i class="far fa-circle"></i></span>
+                        <input id="form_time" class="input is-info is-small" placeholder="HH:MM" type="text" name="time">
+                        <span class="icon is-left"><i class="far fa-clock"></i></span>
                     </div>
                 </div>
                 <div class="field">
                     <label class="label is-small">Description</label>
                     <div class="control has-icons-left">
-                        <textarea id="description" class="input is-info is-small" name="Description"></textarea>
+                        <textarea id="description" class="input is-info is-small"  rows="2" name="Description"></textarea>
                         <span class="icon is-left"><i class="far fa-sticky-note"></i></span>
                     </div>
                 </div>
-                <div class="field">
-                    <label class="label is-small">Request Date</label>
-                    <div class="field has-addons">
-                        <div class="control has-icons-left is-expanded">
-                            <input data-caption="Transaction Date" id="" class="input is-info is-small transaction-date" type="text">
-                            <span class="icon is-left"><i class="far fa-circle"></i></span>
-                        </div>
-                        <div class="control">
-                            <a class="button is-info is-small" id="request_date">
-                                <i class="far fa-calendar-alt"></i>
-                            </a>
-                        </div>
+                <div class="modal">
+                    <div class="modal-background"></div>
+                    <div class="modal-card">
+                        <header class="modal-card-head">
+                            <p class="modal-card-title">Thank you</p>
+                            <button class="delete" aria-label="close"></button>
+                        </header>
+                        <section class="modal-card-body">
+                            Someone will you contact you shortly
+                        </section>
+                        <footer class="modal-card-foot">
+                            <button class="button is-success">Confirm</button>
+                        </footer>
                     </div>
                 </div>
             </div>
@@ -140,7 +188,112 @@
 
 </body>
 <script>
-    $('.transaction-date').val( moment().format() );
+    $(document).ready(function () {
+
+        $('#form_time').timepicker({
+            timeFormat: 'h:mm p',
+            interval: 15,
+            minTime: '10',
+            maxTime: '6:00pm',
+            // defaultTime: '11',
+            startTime: '10:00',
+            dynamic: false,
+            dropdown: true,
+            listWidth: 1,
+            scrollbar: false
+        });
+        $('.navbar-burger').click(function () {
+
+            $('.navbar-burger').toggleClass("is-active");
+            $('.navbar-menu').toggleClass("is-active");
+        });
+
+        $('#form_date').toArray().forEach(function (field) {
+
+            new Cleave(field, {
+                date: true,
+                delimiter: '-',
+                datePattern: ['m', 'd', 'Y'],
+            })
+        });
+        $('input[id*=form_date]').toArray().forEach(function (field) {
+
+            new Pikaday({
+                field: field,
+                trigger: $('#' + field.id + '_btn')[0],
+                format: 'MM-DD-YYYY',
+            })
+        });
+        $('#submit-btn, #submit-btn-bar').click(function(event){
+            event.preventDefault();
+            let valid = true;
+            let first_name = $('#first_name').val();
+            let last_name = $('#last_name').val();
+            let email = $('#email').val();
+            let form_date = $('#form_date').val();
+            let form_time = $('#form_time').val();
+            let description = $('#description').val();
+
+            var tim = /((1[0-2]|0?[1-9]):([0-5][0-9]) ?([AaPp][Mm]))/;
+
+            var time = tim.test(form_time);
+
+            first_name = first_name.trim();
+            last_name = last_name.trim();
+            description = description.trim();
+
+            var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            var out_email =  re.test(email);
+
+            if ( first_name === "" ) {
+
+                alert("Please enter first name.");
+                valid = false;
+                $(this).focus();
+                return false;
+            }
+            if ( last_name === "" ) {
+
+                alert("Please enter last name.");
+                valid = false;
+                $(this).focus();
+                return false;
+            }
+
+            if (  out_email === false ) {
+                alert("Please enter valid email.");
+                valid = false;
+                $(this).focus();
+                return false;
+            }
+
+            if (  form_date === '' ) {
+                alert("Please select a date.");
+                valid = false;
+                $(this).focus();
+                return false;
+            }
+            if (  time === false ) {
+                alert("Please select a time.");
+                valid = false;
+                $(this).focus();
+                return false;
+            }
+
+            if (  description === '' ) {
+                alert("Please enter details regarding session you .");
+                valid = false;
+                $(this).focus();
+                return false;
+            }
+
+            if ( valid ){
+
+                $('.modal').css('display', 'block')
+
+            }
+        });
+    });
 
 </script>
 
