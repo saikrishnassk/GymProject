@@ -115,7 +115,7 @@
                 <h1 style="margin-top: 1rem;"><span class="font-extra-bold no-margins text-success" style="float: left;"> Request Info</span></h1>
             </div>
         </div>
-        <form action="request_form" method="POST" id="daily_assessment" style="margin-top: 1rem">
+        <form action="request_form" method="POST" id="request_form" style="margin-top: 1rem">
             <div class="field-wrap">
 
                 <div class="field">
@@ -171,7 +171,7 @@
                             Someone will you contact you shortly
                         </section>
                         <footer class="modal-card-foot">
-                            <button class="button is-success">Confirm</button>
+                            <button class="button is-success" id="confirm">Confirm</button>
                         </footer>
                     </div>
                 </div>
@@ -291,7 +291,13 @@
 
                 $('.modal').css('display', 'block')
 
+                $('#confirm').click(function () {
+
+                    document.getElementById('request_form').submit();
+                });
+
             }
+            return valid;
         });
     });
 
