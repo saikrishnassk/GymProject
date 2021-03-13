@@ -6,8 +6,12 @@
     
     //TODO: Replace with your sandbox application ID
     applicationId: "sandbox-sq0idb-oyi32pji49CBhaL8Q8w9LQ",
+    locationId: "L8M4338DZF0SW",
     inputClass: 'sq-input',
     autoBuild: false,
+    applePay: {
+        elementId: 'sq-apple-pay'
+      },
     // Customize the CSS for SqPaymentForm iframe elements
     inputStyles: [{
         fontSize: '16px',
@@ -39,6 +43,73 @@
         * callback function: cardNonceResponseReceived
         * Triggered when: SqPaymentForm completes a card nonce request
         */
+       methodsSupported: function (methods, unsupportedReason) {
+        console.log(methods);
+  
+        var applePayBtn = document.getElementById('sq-apple-pay');
+  
+        // Only show the button if Apple Pay on the Web is enabled
+        // Otherwise, display the wallet not enabled message.
+        if (methods.applePay === true) {
+          applePayBtn.style.display = 'inline-block';
+        } else {
+          console.log(unsupportedReason);
+        }
+      }
+  ,
+  createPaymentRequest: function () {
+    console.log("Came to Apple pay");
+    var paymentRequestJson = {
+      requestShippingAddress: true,
+      requestBillingInfo: true,
+      shippingContact: {
+        familyName: "CUSTOMER LAST NAME",
+        givenName: "CUSTOMER FIRST NAME",
+        email: "mycustomer@example.com",
+        country: "USA",
+        region: "CA",
+        city: "San Francisco",
+        addressLines: [
+          "1455 Market St #600"
+        ],
+        postalCode: "94103",
+        phone:"14255551212"
+      },
+      currencyCode: "USD",
+      countryCode: "US",
+      total: {
+        label: "MERCHANT NAME",
+        amount: "85.00",
+        pending: false
+      },
+      lineItems: [
+        {
+          label: "Subtotal",
+          amount: "60.00",
+          pending: false
+        },
+        {
+          label: "Shipping",
+          amount: "19.50",
+          pending: true
+        },
+        {
+          label: "Tax",
+          amount: "5.50",
+          pending: false
+        }
+      ],
+      shippingOptions: [
+        {
+          id: "1",
+          label: "SHIPPING LABEL",
+          amount: "SHIPPING COST"
+        }
+     ]
+    };
+
+    return paymentRequestJson;
+},
         cardNonceResponseReceived: function (errors, nonce, cardData) {
         if (errors) {
             // Log errors from nonce generation to the browser developer console.

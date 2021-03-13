@@ -9,7 +9,13 @@ const { Client, Environment, ApiError } = require('square');
 
 const accountSid = `${config.accountSid}`; 
 const authToken = `${config.authToken}`; 
-const clientMsg = require('twilio')(accountSid, authToken); 
+try{
+  const clientMsg = require('twilio')(accountSid, authToken); 
+}
+catch(err){
+  console.log("Error in connecting");
+  console.log(error);
+}
  
 mongoose.set('useFindAndModify', false);
 // const URI ='mongodb+srv://user1:user1@cluster0.fsrgc.mongodb.net/DBA_Project?retryWrites=true&w=majority'
@@ -28,6 +34,7 @@ function ToCapitalize(arr){
 
 function CreateTextMessage(data){
     if(data){
+      try{
         clientMsg.messages
             .create({
                 body: `Hi Phani, 
@@ -37,6 +44,10 @@ function CreateTextMessage(data){
             })
             .then(message => console.log(message.sid))
             .done();
+      }
+      catch(error){
+        console.log("Failed to rend message!!!");
+      }
         return 'true';
     }
     else {
@@ -45,10 +56,7 @@ function CreateTextMessage(data){
 }
 
 const selfAssessmentSchema = new mongoose.Schema({
-    FirstName:{
-      type: String
-    },
-    LastName:{
+    Name:{
       type: String
     },
     Questions:{
@@ -125,8 +133,7 @@ app.post('/self_assis',async (req,res)=>{
 
     let data = {};
 
-    data.FirstName = 'sai';
-    data.LastName = 'Krishna';
+    data.Name = req.body['Name'];
     const questions = ['Have you experienced any of the following symptoms in the past 48 hours: Fever or Chills, Cough, Shortness of breathing or difficulty breathing, fatigue, muscle or body aches, headache, loss of taste or smell, sore throat, congestion or runny nose, nausea or vomiting, diarrhe','Have you had close contact with a laboratory confirmed case of COVID-19 in the last 14 days?','Was your daily temperature self-screening greater than 100.4 degrees fahrenheit?'];
     const answers = [req.body['q1_yes'],req.body['q2_yes'],req.body['q3_yes']];
     data.Questions = questions;
