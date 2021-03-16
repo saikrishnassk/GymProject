@@ -2,6 +2,9 @@ const express = require('express');
 const mongoose=require('mongoose');
 const dateTime = require('date-time');
 const config = require('./config');
+const nodemailer = require('nodemailer');
+const sgMail = require('@sendgrid/mail');
+const sendgridTransport = require('nodemailer-sendgrid-transport');
 require('dotenv').config();
 const app = express();
 const bodyParser = require('body-parser');
@@ -26,6 +29,19 @@ const connectDB = async () =>{
     console.log('db connected..!');
 };
 connectDB();
+
+const createCsvWriter = require('csv-writer').createObjectCsvWriter;
+const csvWriter = createCsvWriter({
+    path: 'file.csv',
+    header: [
+        {id: 'name', title: 'NAME'},
+        {id: 'question1', title: 'Have you experienced any of the following symptoms in the past 48 hours: Fever or Chills, Cough, Shortness of breathing or difficulty breathing, fatigue, muscle or body aches, headache, loss of taste or smell, sore throat, congestion or runny nose, nausea or vomiting, diarrhe'},
+        {id: 'question2', title: 'Have you had close contact with a laboratory confirmed case of COVID-19 in the last 14 days?'},
+        {id: 'question3', title: 'Was your daily temperature self-screening greater than 100.4 degrees fahrenheit?'}
+
+    ]
+});
+ 
 
 function ToCapitalize(arr){
   if(arr==='' || arr==undefined) return '';
@@ -118,6 +134,7 @@ app.get('/self_assessment',(req,res)=>{
 });
 app.get('/request_form',(req,res)=>{
     RequestForm.find({}).then(data =>{
+      console.log(data);
     });
     res.render('request_form');
 });
@@ -125,6 +142,70 @@ app.get('/request_form',(req,res)=>{
 app.get('/feedback',(req,res)=>{
     res.render('feedback');
 });
+
+const transporter = nodemailer.createTransport(sendgridTransport(
+  {
+    auth:{
+      api_key: `${config.send_grid_api}`
+    }
+  }
+));
+
+// sgMail.setApiKey(config.send_grid_api);
+
+app.get('/sendmail',(req,res)=>{
+  let records = [];
+  SelfAssess.find({}).then(data =>{
+    for(var i=0;i<data.length;i++){
+      let element_row={};
+      element_row['name']=data[i]['Name'];
+      element_row['question1']=data[i]['Answers'][0];
+      element_row['question2']=data[i]['Answers'][1];
+      element_row['question3']=data[i]['Answers'][2];
+      records.push(element_row);
+    }  
+  }).then(data1 =>{
+    csvWriter.writeRecords(records)       // returns a promise
+    .then(() => {
+        console.log('...Done');
+    });
+
+  }).then(data2 =>{
+    transporter.sendMail({
+      to: 'singamsettyphanindra@gmail.com',
+      from: 'pushthelimitfit@gmail.com',
+      subject: 'First mailing',
+      html: "<h1>Hi Sai</h1><br><h2>This is message from nodemailer</h2>",
+      attachments: [{
+        filename: 'file.csv', path: './file.csv'
+      }]
+    }).then(data =>{
+      console.log("Sent mail sucessfully!!",data);
+    }).catch(err =>{
+      console.log("Error in sending : ",err);
+    });
+  });
+ 
+
+  res.redirect("/self_assessment");
+
+  
+  // const msg = {
+  //   to: 'saikrishna25101999@gmail.com', // Change to your recipient
+  //   from: 'pushthelimitfit@gmail.com', // Change to your verified sender
+  //   subject: 'Sending with SendGrid is Fun',
+  //   text: 'and easy to do anywhere, even with Node.js',
+  //   html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+  // }
+  // sgMail
+  //   .send(msg)
+  //   .then(() => {
+  //     console.log('Email sent')
+  //   })
+  //   .catch((error) => {
+  //     console.error(error)
+  //   })
+})
 
 app.post('/feedback',(req,res)=>{
     res.render('index');
