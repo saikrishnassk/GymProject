@@ -16,8 +16,8 @@ try{
   const clientMsg = require('twilio')(accountSid, authToken); 
 }
 catch(err){
-  console.log("Error in connecting");
-  console.log(error);
+  console.log('Error in connecting');
+  console.log(err);
 }
  
 mongoose.set('useFindAndModify', false);
@@ -44,11 +44,11 @@ const csvWriter = createCsvWriter({
  
 
 function ToCapitalize(arr){
-  if(arr==='' || arr==undefined) return '';
+  if(arr==='' || arr===undefined) {return '';}
   return arr.charAt(0).toUpperCase()+arr.slice(1);
 }
 
-function CreateTextMessage(data){
+function CreateTextMessage(data, clientMsg){
     if(data){
       try{
         clientMsg.messages
@@ -62,7 +62,7 @@ function CreateTextMessage(data){
             .done();
       }
       catch(error){
-        console.log("Failed to rend message!!!");
+        console.log('Failed to rend message!!!');
       }
         return 'true';
     }
@@ -128,7 +128,6 @@ app.get('/',(req,res)=>{
 
 app.get('/self_assessment',(req,res)=>{
     SelfAssess.find({}).then(data =>{
-        console.log(data);
     });
     res.render('self_assessment');
 });
