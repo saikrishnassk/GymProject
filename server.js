@@ -6,6 +6,7 @@ const nodemailer = require('nodemailer');
 const sgMail = require('@sendgrid/mail');
 const sendgridTransport = require('nodemailer-sendgrid-transport');
 require('dotenv').config();
+let cron = require('node-cron');
 const app = express();
 const bodyParser = require('body-parser');
 const { Client, Environment, ApiError } = require('square');
@@ -37,15 +38,15 @@ const csvWriter = createCsvWriter({
         {id: 'name', title: 'NAME'},
         {id: 'question1', title: 'Have you experienced any of the following symptoms in the past 48 hours: Fever or Chills, Cough, Shortness of breathing or difficulty breathing, fatigue, muscle or body aches, headache, loss of taste or smell, sore throat, congestion or runny nose, nausea or vomiting, diarrhe'},
         {id: 'question2', title: 'Have you had close contact with a laboratory confirmed case of COVID-19 in the last 14 days?'},
-        {id: 'question3', title: 'Was your daily temperature self-screening greater than 100.4 degrees fahrenheit?'}
-
+        {id: 'question3', title: 'Was your daily temperature self-screening greater than 100.4 degrees fahrenheit?'},
+        {id: 'date', title: 'DATE'}
     ]
 });
  
 
 function ToCapitalize(arr){
   if(arr==='' || arr===undefined) {return '';}
-  return arr.charAt(0).toUpperCase()+arr.slice(1);
+  return arr.charAt(0).toUpperCase()+arr.slice(1).toLowerCase();
 }
 
 function CreateTextMessage(data, clientMsg){
@@ -128,6 +129,7 @@ app.get('/',(req,res)=>{
 
 app.get('/self_assessment',(req,res)=>{
     SelfAssess.find({}).then(data =>{
+      console.log(data);
     });
     res.render('self_assessment');
 });
@@ -151,7 +153,19 @@ const transporter = nodemailer.createTransport(sendgridTransport(
 ));
 
 // sgMail.setApiKey(config.send_grid_api);
+function compare_name(a, b) {
+  // Use toUpperCase() to ignore character casing
+  const bandA = a.name.toUpperCase();
+  const bandB = b.name.toUpperCase();
 
+  let comparison = 0;
+  if (bandA > bandB) {
+    comparison = 1;
+  } else if (bandA < bandB) {
+    comparison = -1;
+  }
+  return comparison;
+}
 app.get('/sendmail',(req,res)=>{
   let records = [];
   SelfAssess.find({}).then(data =>{
@@ -161,29 +175,33 @@ app.get('/sendmail',(req,res)=>{
       element_row['question1']=data[i]['Answers'][0];
       element_row['question2']=data[i]['Answers'][1];
       element_row['question3']=data[i]['Answers'][2];
+      element_row['date']=data[i]['TimeStamp'].slice(0,10);
       records.push(element_row);
     }  
   }).then(data1 =>{
+    records.sort(compare_name);
+    console.log(records);
     csvWriter.writeRecords(records)       // returns a promise
     .then(() => {
         console.log('...Done');
     });
 
-  }).then(data2 =>{
-    transporter.sendMail({
-      to: 'singamsettyphanindra@gmail.com',
-      from: 'pushthelimitfit@gmail.com',
-      subject: 'First mailing',
-      html: "<h1>Hi Sai</h1><br><h2>This is message from nodemailer</h2>",
-      attachments: [{
-        filename: 'file.csv', path: './file.csv'
-      }]
-    }).then(data =>{
-      console.log("Sent mail sucessfully!!",data);
-    }).catch(err =>{
-      console.log("Error in sending : ",err);
-    });
-  });
+  })
+  // .then(data2 =>{
+  //   transporter.sendMail({
+  //     to: 'singamsettyphanindra@gmail.com',
+  //     from: 'pushthelimitfit@gmail.com',
+  //     subject: 'First mailing',
+  //     html: "<h1>Hi Sai</h1><br><h2>This is message from nodemailer</h2>",
+  //     attachments: [{
+  //       filename: 'file.csv', path: './file.csv'
+  //     }]
+  //   }).then(data =>{
+  //     console.log("Sent mail sucessfully!!",data);
+  //   }).catch(err =>{
+  //     console.log("Error in sending : ",err);
+  //   });
+  // });
  
 
   res.redirect("/self_assessment");
@@ -206,6 +224,49 @@ app.get('/sendmail',(req,res)=>{
   //   })
 })
 
+cron.schedule('0 40 10 18 1-12 *', ()=>{
+  console.log("Hi there");
+  let records = [];
+  SelfAssess.find({}).then(data =>{
+    for(var i=0;i<data.length;i++){
+      let element_row={};
+      element_row['name']=data[i]['Name'];
+      element_row['question1']=data[i]['Answers'][0];
+      element_row['question2']=data[i]['Answers'][1];
+      element_row['question3']=data[i]['Answers'][2];
+      element_row['date']=data[i]['TimeStamp'].slice(0,10);
+      records.push(element_row);
+    }  
+  }).then(data1 =>{
+    records.sort(compare_name);
+    console.log(records);
+    csvWriter.writeRecords(records)       // returns a promise
+    .then(() => {
+        console.log('...Done');
+    });
+
+  })
+  .then(data2 =>{
+    transporter.sendMail({
+      to: 'singamsettyphanindra@gmail.com',
+      from: 'pushthelimitfit@gmail.com',
+      subject: 'First mailing',
+      html: "<h1>Hi Sai</h1><br><h2>This is message from nodemailer</h2>",
+      attachments: [{
+        filename: 'file.csv', path: './file.csv'
+      }]
+    }).then(data =>{
+      console.log("Sent mail sucessfully!!",data);
+    }).catch(err =>{
+      console.log("Error in sending : ",err);
+    });
+  });
+}, {
+  scheduled: true,
+  timezone: 'America/Detroit'
+})
+
+
 app.post('/feedback',(req,res)=>{
     res.render('index');
 });
@@ -213,7 +274,7 @@ app.post('/self_assis',async (req,res)=>{
 
     let data = {};
 
-    data.Name = req.body['Name'];
+    data.Name = ToCapitalize(req.body['Name']);
     const questions = ['Have you experienced any of the following symptoms in the past 48 hours: Fever or Chills, Cough, Shortness of breathing or difficulty breathing, fatigue, muscle or body aches, headache, loss of taste or smell, sore throat, congestion or runny nose, nausea or vomiting, diarrhe','Have you had close contact with a laboratory confirmed case of COVID-19 in the last 14 days?','Was your daily temperature self-screening greater than 100.4 degrees fahrenheit?'];
     const answers = [req.body['q1_yes'],req.body['q2_yes'],req.body['q3_yes']];
     data.Questions = questions;
