@@ -72,7 +72,7 @@
 <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
         <a class="navbar-item" href="">
-            <img src="" width="140">
+            <img src="/images/ptl-fitness-logo.png" width="140">
         </a>
 
         <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
@@ -140,24 +140,33 @@
                     </div>
                 </div>
                 <div class="field">
-                    <label class="label is-small">Date</label>
+                    <label class="label is-small">Date of Appointment</label>
                     <div class="control has-icons-left">
                         <input id="form_date" class="input is-info is-small" placeholder="MM-DD-YYYY" type="text" name="date" >
                         <span class="icon is-left"><i class="far fa-calendar-alt"></i></span>
                     </div>
                 </div>
                 <div class="field">
-                    <label class="label is-small">Time</label>
+                    <label class="label is-small">Time of Appointment</label>
                     <div class="control has-icons-left">
                         <input id="form_time" class="input is-info is-small" placeholder="HH:MM" type="text" name="time">
                         <span class="icon is-left"><i class="far fa-clock"></i></span>
                     </div>
                 </div>
                 <div class="field">
-                    <label class="label is-small">Description</label>
+                    <label class="label is-small">Select Service</label>
                     <div class="control has-icons-left">
-                        <textarea id="description" class="input is-info is-small"  rows="2" name="Description"></textarea>
-                        <span class="icon is-left"><i class="far fa-sticky-note"></i></span>
+                        <div class="select is-info is-small is-fullwidth">
+                            <select id="description" name="Description">
+                                <option value="">...</option>
+                                <option value="Bootcamp">Bootcamp ($15 per session)</option>
+                                <option value="Personal Session">Personal Session</option>
+                            </select>
+                        </div>
+                        <span class="icon is-small is-left"><i class="fas fa-sort-alpha-down"></i></span>
+
+<!--                        <textarea id="description" class="input is-info is-small"  rows="2" name="Description"></textarea>-->
+<!--                        <span class="icon is-left"><i class="far fa-sticky-note"></i></span>-->
                     </div>
                 </div>
                 <div class="modal">

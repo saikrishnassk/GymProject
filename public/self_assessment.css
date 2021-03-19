@@ -8,7 +8,7 @@
 }
 a.navbar-item:hover{
     background-color: #C8B946;
-    border-radius: 15px;
+    border-radius: 8px;
     padding-top: 8px;
     /*color: #C8B946;*/
 }
@@ -191,6 +191,23 @@ table.dataTable thead th {
     animation-delay: 0s;
 }
 
+
+.select.is-info select {
+    border-color: #177978;
+}
+.navbar-brand {
+    align-items: stretch;
+    display: flex;
+    flex-shrink: 0;
+    min-height: 3.25rem;
+}
+.navbar-item img {
+    max-height: 5rem;
+}
+a {
+    font-weight: 600;
+}
+
 @keyframes lds {
     0% {
         top: 6px;
@@ -212,9 +229,9 @@ table.dataTable thead th {
         display: block;
     }
 
-    .navbar-brand {
-        display: none;
-    }
+    /*.navbar-brand {*/
+    /*    display: none;*/
+    /*}*/
 }
 
 @media screen and (max-width: 769px) {
@@ -234,7 +251,7 @@ table.dataTable thead th {
         display: none;
     }
 
-    .navbar-brand {
-        display: block;
-    }
+    /*.navbar-brand {*/
+    /*    display: block;*/
+    /*}*/
 }
