@@ -12,14 +12,14 @@ const bodyParser = require('body-parser');
 const { Client, Environment, ApiError } = require('square');
 
 const accountSid = `${config.accountSid}`; 
-const authToken = `${config.authToken}`; 
-try{
-  const clientMsg = require('twilio')(accountSid, authToken); 
-}
-catch(err){
-  console.log('Error in connecting');
-  console.log(err);
-}
+const authToken = `${config.authToken}`;
+// try{
+const clientMsg = require('twilio')(accountSid, authToken);
+// }
+// catch(err){
+//   console.log('Error in connecting');
+//   console.log(err);
+// }
  
 mongoose.set('useFindAndModify', false);
 // const URI ='mongodb+srv://user1:user1@cluster0.fsrgc.mongodb.net/DBA_Project?retryWrites=true&w=majority'
@@ -49,13 +49,13 @@ function ToCapitalize(arr){
   return arr.charAt(0).toUpperCase()+arr.slice(1).toLowerCase();
 }
 
-function CreateTextMessage(data, clientMsg){
+function CreateTextMessage(data){
     if(data){
       try{
         clientMsg.messages
             .create({
                 body: `Hi Phani, 
-                \n${data.FirstName}, ${data.LastName} has signed in for a ${data.Time} Appointment on ${data.Date}`,
+                \n${data.FirstName}, ${data.LastName} has signed in for a ${data.Time} Appointment on ${data.Date} requested service for ${data.Description}`,
                 messagingServiceSid: 'MG5f300a9b2c0727c5ca3ed70d84ff9eb7',
                 to: '+12483257855'
             })
@@ -63,7 +63,7 @@ function CreateTextMessage(data, clientMsg){
             .done();
       }
       catch(error){
-        console.log('Failed to rend message!!!');
+        console.log('Failed to send message!!!');
       }
         return 'true';
     }
@@ -129,13 +129,13 @@ app.get('/',(req,res)=>{
 
 app.get('/self_assessment',(req,res)=>{
     SelfAssess.find({}).then(data =>{
-      console.log(data);
+      // console.log(data);
     });
     res.render('self_assessment');
 });
 app.get('/request_form',(req,res)=>{
     RequestForm.find({}).then(data =>{
-      console.log(data);
+      // console.log(data);
     });
     res.render('request_form');
 });
@@ -180,7 +180,7 @@ app.get('/sendmail',(req,res)=>{
     }  
   }).then(data1 =>{
     records.sort(compare_name);
-    console.log(records);
+    // console.log(records);
     csvWriter.writeRecords(records)       // returns a promise
     .then(() => {
         console.log('...Done');
