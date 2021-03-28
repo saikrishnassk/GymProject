@@ -13,13 +13,9 @@ const { Client, Environment, ApiError } = require('square');
 
 const accountSid = `${config.accountSid}`; 
 const authToken = `${config.authToken}`;
-// try{
+
 const clientMsg = require('twilio')(accountSid, authToken);
-// }
-// catch(err){
-//   console.log('Error in connecting');
-//   console.log(err);
-// }
+
  
 mongoose.set('useFindAndModify', false);
 // const URI ='mongodb+srv://user1:user1@cluster0.fsrgc.mongodb.net/DBA_Project?retryWrites=true&w=majority'
