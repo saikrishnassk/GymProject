@@ -3,7 +3,6 @@ const mongoose=require('mongoose');
 const dateTime = require('date-time');
 const config = require('./config');
 const nodemailer = require('nodemailer');
-const sgMail = require('@sendgrid/mail');
 const sendgridTransport = require('nodemailer-sendgrid-transport');
 require('dotenv').config();
 let cron = require('node-cron');
@@ -109,6 +108,19 @@ const requestFormSchema = new mongoose.Schema({
 });
 const RequestForm = mongoose.model('RequestForm',requestFormSchema);
 
+const paymentFormSchema = new mongoose.Schema({
+  Name:{
+      type:String
+  },
+  Amount:{
+      type:Number
+  },
+  TimeStamp:{
+      type:String
+  }
+});
+const PaymentForm = mongoose.model('PaymentForm',paymentFormSchema);
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.urlencoded({extended:false}));
@@ -120,7 +132,7 @@ app.set('views',__dirname+'/views');
 const accessToken = `${config.sqaure_access_token}`;
 
 app.get('/',(req,res)=>{
-    res.render('index');
+    res.redirect("https://www.pushthelimitfit.com/");
 });
 
 app.get('/self_assessment',(req,res)=>{
