@@ -318,7 +318,7 @@ app.get('/payment',(req,res)=>{
     res.render('payment');
 });
 const client = new Client({
-    environment: Environment.Sandbox,
+    environment: Environment.Production,
     accessToken: accessToken,
   });
   
