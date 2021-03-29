@@ -1,12 +1,14 @@
+
 //TODO: paste code from step 2.1.1
+let sqaure_application_id="sq0idp-7OxEyTsDKwKFnMcZu_SFzg",square_location_id="EESJP8FE4016M";
     const idempotency_key = uuidv4();
     // Create and initialize a payment form object
     const paymentForm = new SqPaymentForm({
     // Initialize the payment form elements
     
     //TODO: Replace with your sandbox application ID
-    applicationId: "sandbox-sq0idb-oyi32pji49CBhaL8Q8w9LQ",
-    locationId: "L8M4338DZF0SW",
+    applicationId: `${sqaure_application_id}`,
+    locationId: `${square_location_id}`,
     inputClass: 'sq-input',
     autoBuild: false,
     applePay: {
@@ -44,7 +46,7 @@
         * Triggered when: SqPaymentForm completes a card nonce request
         */
        methodsSupported: function (methods, unsupportedReason) {
-        console.log(methods);
+        // console.log(methods);
   
         var applePayBtn = document.getElementById('sq-apple-pay');
   
@@ -123,6 +125,7 @@
         //TODO: Replace alert with code in step 2.1
         //$('#Amount').val()
         var amount = document.getElementById("payment-amount").value;
+        var name = document.getElementById("payment-name").value;
         fetch('process-payment', {
 method: 'POST',
 headers: {
@@ -130,10 +133,11 @@ headers: {
 'Content-Type': 'application/json'
 },
 body: JSON.stringify({
+name:name,
 amount:amount,
 nonce: nonce,
 idempotency_key: idempotency_key,
-location_id: "L8M4338DZF0SW"
+location_id: `${square_location_id}`
 })   
 })
 .catch(err => {
@@ -147,12 +151,14 @@ return response.json().then(
 return response.json();
 })
 .then(data => {
-console.log(data);
-alert('Payment complete successfully!\nCheck browser developer console for more details');
+// console.log(data);
+alert('Payment complete successfully!');
+window.location.replace("https://www.pushthelimitfit.com/");
 })
 .catch(err => {
 console.error(err);
-alert('Payment failed to complete!\nCheck browser developer console for more details');
+alert('Payment failed to complete!');
+window.location.replace("https://www.pushthelimitfit.com/");
 });
 
         // alert(`The generated nonce is:\n${nonce}`);

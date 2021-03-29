@@ -81,7 +81,7 @@
   #sq-card-number {
     margin-bottom: 16px;
   }
-  #payment-amount{
+  #payment-amount,#payment-name{
       box-sizing: border-box;
       width: 100%;
       height: 56px;
@@ -91,6 +91,14 @@
       border-radius: 6px;
       padding: 16px;
       font-size: 16px;
+  }
+  #payment-amount{
+    padding:25px;
+  }
+  .dollar-symbol{
+    position: absolute;
+    left:15px;
+    top:90px;
   }
   /* Customize the "Pay with Credit Card" button */
   .button-credit-card {
@@ -121,7 +129,8 @@
 /* CSS */
 @supports (-webkit-appearance: -apple-pay-button) { 
   .apple-pay-button {
-      display: inline-block;
+      /* display: inline-block; */
+      display: none;
       -webkit-appearance: -apple-pay-button;
   }
   .apple-pay-button-black {
@@ -173,5 +182,8 @@
   #form-container{
     width:100%;
     padding:5px;
+  }
+  .dollar-symbol{
+    top:95px;
   }
 }

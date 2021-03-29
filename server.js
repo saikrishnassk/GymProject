@@ -17,7 +17,6 @@ const clientMsg = require('twilio')(accountSid, authToken);
 
  
 mongoose.set('useFindAndModify', false);
-// const URI ='mongodb+srv://user1:user1@cluster0.fsrgc.mongodb.net/DBA_Project?retryWrites=true&w=majority'
 const URI =`${config.mongodb_url}`;
 
 const connectDB = async () =>{
@@ -37,7 +36,14 @@ const csvWriter = createCsvWriter({
         {id: 'date', title: 'DATE'}
     ]
 });
- 
+const csvWriter1 = createCsvWriter({
+  path: 'file1.csv',
+  header: [
+      {id: 'name', title: 'NAME'},
+      {id: 'amount', title: 'AMOUNT'},
+      {id: 'date', title: 'DATE'}
+  ]
+});
 
 function ToCapitalize(arr){
   if(arr==='' || arr===undefined) {return '';}
@@ -49,10 +55,10 @@ function CreateTextMessage(data){
       try{
         clientMsg.messages
             .create({
-                body: `Hi Phani, 
+                body: `Hello, 
                 \n${data.FirstName}, ${data.LastName} has signed in for a ${data.Time} Appointment on ${data.Date} requested service for ${data.Description}`,
-                messagingServiceSid: 'MG5f300a9b2c0727c5ca3ed70d84ff9eb7',
-                to: '+12483257855'
+                messagingServiceSid: 'MG7bbd293395a80dfa3871da1f90050c34',
+                to: '+13132932246'
             })
             .then(message => console.log(message.sid))
             .done();
@@ -66,7 +72,28 @@ function CreateTextMessage(data){
         return 'false';
     }
 }
-
+function CreateTextMessage1(data){
+  if(data){
+    try{
+      clientMsg.messages
+          .create({
+              body: `
+              \n${data.Name} made a $${data.Amount} payment`,
+              messagingServiceSid: 'MG7bbd293395a80dfa3871da1f90050c34',
+              to: '+13132932246'
+          })
+          .then(message => console.log(message.sid))
+          .done();
+    }
+    catch(error){
+      console.log('Failed to send message!!!');
+    }
+      return 'true';
+  }
+  else {
+      return 'false';
+  }
+}
 const selfAssessmentSchema = new mongoose.Schema({
     Name:{
       type: String
@@ -134,17 +161,10 @@ const accessToken = `${config.sqaure_access_token}`;
 app.get('/',(req,res)=>{
     res.redirect("https://www.pushthelimitfit.com/");
 });
-
 app.get('/self_assessment',(req,res)=>{
-    SelfAssess.find({}).then(data =>{
-      // console.log(data);
-    });
     res.render('self_assessment');
 });
 app.get('/request_form',(req,res)=>{
-    RequestForm.find({}).then(data =>{
-      // console.log(data);
-    });
     res.render('request_form');
 });
 
@@ -160,12 +180,9 @@ const transporter = nodemailer.createTransport(sendgridTransport(
   }
 ));
 
-// sgMail.setApiKey(config.send_grid_api);
 function compare_name(a, b) {
-  // Use toUpperCase() to ignore character casing
   const bandA = a.name.toUpperCase();
   const bandB = b.name.toUpperCase();
-
   let comparison = 0;
   if (bandA > bandB) {
     comparison = 1;
@@ -174,65 +191,8 @@ function compare_name(a, b) {
   }
   return comparison;
 }
-app.get('/sendmail',(req,res)=>{
-  let records = [];
-  SelfAssess.find({}).then(data =>{
-    for(var i=0;i<data.length;i++){
-      let element_row={};
-      element_row['name']=data[i]['Name'];
-      element_row['question1']=data[i]['Answers'][0];
-      element_row['question2']=data[i]['Answers'][1];
-      element_row['question3']=data[i]['Answers'][2];
-      element_row['date']=data[i]['TimeStamp'].slice(0,10);
-      records.push(element_row);
-    }  
-  }).then(data1 =>{
-    records.sort(compare_name);
-    // console.log(records);
-    csvWriter.writeRecords(records)       // returns a promise
-    .then(() => {
-        console.log('...Done');
-    });
 
-  })
-  // .then(data2 =>{
-  //   transporter.sendMail({
-  //     to: 'singamsettyphanindra@gmail.com',
-  //     from: 'pushthelimitfit@gmail.com',
-  //     subject: 'First mailing',
-  //     html: "<h1>Hi Sai</h1><br><h2>This is message from nodemailer</h2>",
-  //     attachments: [{
-  //       filename: 'file.csv', path: './file.csv'
-  //     }]
-  //   }).then(data =>{
-  //     console.log("Sent mail sucessfully!!",data);
-  //   }).catch(err =>{
-  //     console.log("Error in sending : ",err);
-  //   });
-  // });
- 
-
-  res.redirect("/self_assessment");
-
-  
-  // const msg = {
-  //   to: 'saikrishna25101999@gmail.com', // Change to your recipient
-  //   from: 'pushthelimitfit@gmail.com', // Change to your verified sender
-  //   subject: 'Sending with SendGrid is Fun',
-  //   text: 'and easy to do anywhere, even with Node.js',
-  //   html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-  // }
-  // sgMail
-  //   .send(msg)
-  //   .then(() => {
-  //     console.log('Email sent')
-  //   })
-  //   .catch((error) => {
-  //     console.error(error)
-  //   })
-})
-
-cron.schedule('0 40 10 18 1-12 *', ()=>{
+cron.schedule('0 0 10 5 1-12 *', ()=>{
   console.log("Hi there");
   let records = [];
   SelfAssess.find({}).then(data =>{
@@ -256,12 +216,54 @@ cron.schedule('0 40 10 18 1-12 *', ()=>{
   })
   .then(data2 =>{
     transporter.sendMail({
-      to: 'singamsettyphanindra@gmail.com',
+      to: 'ptlfitnessllc@gmail.com',
       from: 'pushthelimitfit@gmail.com',
-      subject: 'First mailing',
-      html: "<h1>Hi Sai</h1><br><h2>This is message from nodemailer</h2>",
+      subject: 'Report for health assessment',
+      html: "<p>Hello,</p><br><p>This report contians all data of health assessment</p>",
+      text: "Hello,\nThis report contians all data of health assessment",
       attachments: [{
         filename: 'file.csv', path: './file.csv'
+      }]
+    }).then(data =>{
+      console.log("Sent mail sucessfully!!",data);
+    }).catch(err =>{
+      console.log("Error in sending : ",err);
+    });
+  });
+}, {
+  scheduled: true,
+  timezone: 'America/Detroit'
+})
+
+cron.schedule('0 1 10 5 1-12 *', ()=>{
+  console.log("Hi there");
+  let records = [];
+  PaymentForm.find({}).then(data =>{
+    for(var i=0;i<data.length;i++){
+      let element_row={};
+      element_row['name']=data[i]['Name'];
+      element_row['amount']=data[i]['Amount'];
+      element_row['date']=data[i]['TimeStamp'].slice(0,10);
+      records.push(element_row);
+    }  
+  }).then(data1 =>{
+    records.sort(compare_name);
+    console.log(records);
+    csvWriter1.writeRecords(records)       // returns a promise
+    .then(() => {
+        console.log('...Done1');
+    });
+
+  })
+  .then(data2 =>{
+    transporter.sendMail({
+      to: 'Singamsettyphanindra@gmail.com',
+      from: 'pushthelimitfit@gmail.com',
+      subject: 'Report for payments',
+      html: "<p>Hello,</p><br><p>This report contians all data of successful payments</p>",
+      text: "Hello,\nThis report contians all data of successful payments",
+      attachments: [{
+        filename: 'file1.csv', path: './file1.csv'
       }]
     }).then(data =>{
       console.log("Sent mail sucessfully!!",data);
@@ -310,6 +312,9 @@ app.post('/request_form',async (req,res)=>{
 });
 
 app.get('/payment',(req,res)=>{
+  PaymentForm.find({}).then(data => {
+    console.log(data);
+  })
     res.render('payment');
 });
 const client = new Client({
@@ -319,10 +324,14 @@ const client = new Client({
   
   app.post('/process-payment', async (req, res) => {
     const requestParams = req.body;
-  
+    let data = {};
+    const name = ToCapitalize(requestParams.name);
+    const amount = requestParams.amount;
+    data["Name"]=name;
+    data["Amount"]=amount;
+    data["TimeStamp"]=dateTime();
+    console.log(name,amount);
     // Charge the customer's card
-    console.log('Came here');
-    console.log(client.paymentsApi,requestParams.nonce,requestParams);
     const paymentsApi = client.paymentsApi;
     const requestBody = {
       sourceId: requestParams.nonce,
@@ -340,6 +349,9 @@ const client = new Client({
         'title': 'Payment Successful',
         'result': response.result
       });
+      let PaymentFormModel = new PaymentForm(data);
+      await PaymentFormModel.save();
+      CreateTextMessage1(data);
     } catch(error) {
       let errorResult = null;
       if (error instanceof ApiError) {

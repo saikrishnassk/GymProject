@@ -65,6 +65,14 @@
                 Contact
             </a>
 
+            <a class="navbar-item current-page" href="https://www.pushthelimitfits.com/request_form">
+                Request Form
+            </a>
+
+            <a class="navbar-item current-page" href="https://www.pushthelimitfits.com/payment">
+                Pay
+            </a>
+
         </div>
     </div>
 </nav>
@@ -108,6 +116,19 @@
                     </div>
                 </div>
             </div>
+            <div class="modal">
+                <div class="modal-background"></div>
+                <div class="modal-card">
+                    <header class="modal-card-head">
+                        <p class="modal-card-title">Thank you for taking Health Assessment</p>
+                        <button class="delete" aria-label="close"></button>
+                    </header>
+                    <section class="modal-card-body">
+                        We look forward to see you
+                    </section>
+
+                </div>
+            </div>
 
             <button id="submit-btn" type="submit" class="button is-info is-fullwidth">Submit</button>
 
@@ -125,6 +146,10 @@
 
             $('.navbar-burger').toggleClass("is-active");
             $('.navbar-menu').toggleClass("is-active");
+        });
+
+        $('#submit-btn, #submit-btn-bar').click(function(event){
+            $('.modal').css('display', 'block');
         });
     });
 
