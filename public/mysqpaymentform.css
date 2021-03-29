@@ -21,7 +21,7 @@
     color: #373F4A;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: normal;
-    height: 100%;
+    height: 100vh;
   }
   
   button {
@@ -137,7 +137,8 @@
 
 @supports not (-webkit-appearance: -apple-pay-button) {
   .apple-pay-button {
-      display: inline-block;
+      /* display: inline-block; */
+      display: none;
       background-size: 100% 60%;
       background-repeat: no-repeat;
       background-position: 50% 50%;
@@ -166,4 +167,11 @@
   margin-top: 16px;
   width: 100%;
   height: 46px;
+}
+
+@media (max-width:1024px){
+  #form-container{
+    width:100%;
+    padding:5px;
+  }
 }
