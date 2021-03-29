@@ -78,7 +78,7 @@ function CreateTextMessage1(data){
       clientMsg.messages
           .create({
               body: `
-              \n${data.Name} made a $${data.Amount} payment`,
+              \n${data.Name} Made a $${data.Amount} payment`,
               messagingServiceSid: 'MG7bbd293395a80dfa3871da1f90050c34',
               to: '+13132932246'
           })
@@ -159,7 +159,7 @@ app.set('views',__dirname+'/views');
 const accessToken = `${config.sqaure_access_token}`;
 
 app.get('/',(req,res)=>{
-    res.redirect("https://www.pushthelimitfit.com/");
+    res.redirect('https://www.pushthelimitfit.com/');
 });
 app.get('/self_assessment',(req,res)=>{
     res.render('self_assessment');
@@ -193,7 +193,7 @@ function compare_name(a, b) {
 }
 
 cron.schedule('0 0 10 5 1-12 *', ()=>{
-  console.log("Hi there");
+  console.log('Hi there');
   let records = [];
   SelfAssess.find({}).then(data =>{
     for(var i=0;i<data.length;i++){
@@ -219,15 +219,15 @@ cron.schedule('0 0 10 5 1-12 *', ()=>{
       to: 'ptlfitnessllc@gmail.com',
       from: 'pushthelimitfit@gmail.com',
       subject: 'Report for health assessment',
-      html: "<p>Hello,</p><br><p>This report contians all data of health assessment</p>",
-      text: "Hello,\nThis report contians all data of health assessment",
+      html: '<p>Hello,</p><br><p>This report contians all data of health assessment</p>',
+      text: 'Hello,\nThis report contians all data of health assessment',
       attachments: [{
         filename: 'file.csv', path: './file.csv'
       }]
     }).then(data =>{
-      console.log("Sent mail sucessfully!!",data);
+      console.log('Sent mail sucessfully!!',data);
     }).catch(err =>{
-      console.log("Error in sending : ",err);
+      console.log('Error in sending : ',err);
     });
   });
 }, {
@@ -236,7 +236,7 @@ cron.schedule('0 0 10 5 1-12 *', ()=>{
 })
 
 cron.schedule('0 1 10 5 1-12 *', ()=>{
-  console.log("Hi there");
+  console.log('Hi there');
   let records = [];
   PaymentForm.find({}).then(data =>{
     for(var i=0;i<data.length;i++){
@@ -257,18 +257,18 @@ cron.schedule('0 1 10 5 1-12 *', ()=>{
   })
   .then(data2 =>{
     transporter.sendMail({
-      to: 'Singamsettyphanindra@gmail.com',
+      to: 'ptlfitnessllc@gmail.com',
       from: 'pushthelimitfit@gmail.com',
       subject: 'Report for payments',
-      html: "<p>Hello,</p><br><p>This report contians all data of successful payments</p>",
-      text: "Hello,\nThis report contians all data of successful payments",
+      html: '<p>Hello,</p><br><p>This report contians all data of successful payments</p>',
+      text: 'Hello,\nThis report contians all data of successful payments',
       attachments: [{
         filename: 'file1.csv', path: './file1.csv'
       }]
     }).then(data =>{
-      console.log("Sent mail sucessfully!!",data);
+      console.log('Sent mail sucessfully!!',data);
     }).catch(err =>{
-      console.log("Error in sending : ",err);
+      console.log('Error in sending : ',err);
     });
   });
 }, {
@@ -327,9 +327,9 @@ const client = new Client({
     let data = {};
     const name = ToCapitalize(requestParams.name);
     const amount = requestParams.amount;
-    data["Name"]=name;
-    data["Amount"]=amount;
-    data["TimeStamp"]=dateTime();
+    data['Name']=name;
+    data['Amount']=amount;
+    data['TimeStamp']=dateTime();
     console.log(name,amount);
     // Charge the customer's card
     const paymentsApi = client.paymentsApi;

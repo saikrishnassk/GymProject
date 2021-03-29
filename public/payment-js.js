@@ -1,6 +1,6 @@
 
 //TODO: paste code from step 2.1.1
-let sqaure_application_id="sq0idp-7OxEyTsDKwKFnMcZu_SFzg",square_location_id="EESJP8FE4016M";
+let sqaure_application_id='sq0idp-7OxEyTsDKwKFnMcZu_SFzg',square_location_id='EESJP8FE4016M';
     const idempotency_key = uuidv4();
     // Create and initialize a payment form object
     const paymentForm = new SqPaymentForm({
