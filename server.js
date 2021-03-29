@@ -50,10 +50,10 @@ function CreateTextMessage(data){
       try{
         clientMsg.messages
             .create({
-                body: `Hi Phani, 
+                body: `Hello, 
                 \n${data.FirstName}, ${data.LastName} has signed in for a ${data.Time} Appointment on ${data.Date} requested service for ${data.Description}`,
-                messagingServiceSid: 'MG5f300a9b2c0727c5ca3ed70d84ff9eb7',
-                to: '+12483257855'
+                messagingServiceSid: 'MG7bbd293395a80dfa3871da1f90050c34',
+                to: '+13132932246'
             })
             .then(message => console.log(message.sid))
             .done();
@@ -244,7 +244,7 @@ cron.schedule('0 40 10 18 1-12 *', ()=>{
   })
   .then(data2 =>{
     transporter.sendMail({
-      to: 'singamsettyphanindra@gmail.com',
+      to: 'ptlfitnessllc@gmail.com',
       from: 'pushthelimitfit@gmail.com',
       subject: 'First mailing',
       html: "<h1>Hi Sai</h1><br><h2>This is message from nodemailer</h2>",
