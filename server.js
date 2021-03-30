@@ -27,7 +27,7 @@ connectDB();
 
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const csvWriter = createCsvWriter({
-    path: 'file.csv',
+    path: 'self_assessment_report.csv',
     header: [
         {id: 'name', title: 'NAME'},
         {id: 'question1', title: 'Have you experienced any of the following symptoms in the past 48 hours: Fever or Chills, Cough, Shortness of breathing or difficulty breathing, fatigue, muscle or body aches, headache, loss of taste or smell, sore throat, congestion or runny nose, nausea or vomiting, diarrhe'},
@@ -37,7 +37,7 @@ const csvWriter = createCsvWriter({
     ]
 });
 const csvWriter1 = createCsvWriter({
-  path: 'file1.csv',
+  path: 'payment_report.csv',
   header: [
       {id: 'name', title: 'NAME'},
       {id: 'amount', title: 'AMOUNT'},
@@ -219,22 +219,22 @@ cron.schedule('0 0 10 5 1-12 *', ()=>{
   })
   .then(data2 =>{
     transporter.sendMail({
-      // to: 'ptlfitnessllc@gmail.com',
-      to: 'singamsettyphanindra@gmail.com',
+      to: 'ptlfitnessllc@gmail.com',
       from: 'pushthelimitfit@gmail.com',
       subject: 'Report for health assessment',
       html: '<p>Hello,</p><br><p>This report contians all data of health assessment</p>',
       text: 'Hello,\nThis report contians all data of health assessment',
       attachments: [{
-        filename: 'file.csv', path: './file.csv'
+        filename: 'self_assessment_report.csv', path: './self_assessment_report.csv'
       }]
     }).then(data =>{
       console.log('Sent mail sucessfully!!',data);
+      SelfAssess.deleteMany({}, (result) =>{
+        console.log(result);
+      });
     }).catch(err =>{
       console.log('Error in sending : ',err);
     });
-  }).then(data =>{
-    SelfAssess.remove({});
   });
 }, {
   scheduled: true,
@@ -269,7 +269,7 @@ cron.schedule('0 1 10 5 1-12 *', ()=>{
       html: '<p>Hello,</p><br><p>This report contians all data of successful payments</p>',
       text: 'Hello,\nThis report contians all data of successful payments',
       attachments: [{
-        filename: 'file1.csv', path: './file1.csv'
+        filename: 'payment_report.csv', path: './payment_report.csv'
       }]
     }).then(data =>{
       console.log('Sent mail sucessfully!!',data);
