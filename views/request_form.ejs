@@ -132,6 +132,13 @@
                     </div>
                 </div>
                 <div class="field">
+                    <label class="label is-small">Phone</label>
+                    <div class="control has-icons-left">
+                        <input id="phone" class="input is-info is-small" type="number" placeholder="Phone" name="Phone" >
+                        <span class="icon is-left">+1</span>
+                    </div>
+                </div>
+                <div class="field">
                     <label class="label is-small">Date of Appointment</label>
                     <div class="control has-icons-left">
                         <input id="form_date" class="input is-info is-small" placeholder="MM-DD-YYYY" type="text" name="date" >
@@ -231,6 +238,7 @@
             let first_name = $('#first_name').val();
             let last_name = $('#last_name').val();
             let email = $('#email').val();
+            let phone = $('#phone').val();
             let form_date = $('#form_date').val();
             let form_time = $('#form_time').val();
             let description = $('#description').val();
@@ -263,6 +271,12 @@
 
             if (  out_email === false ) {
                 alert("Please enter valid email.");
+                valid = false;
+                $(this).focus();
+                return false;
+            }
+            if (  phone.toString().length !== 10 ) {
+                alert("Please enter valid Phone number.");
                 valid = false;
                 $(this).focus();
                 return false;

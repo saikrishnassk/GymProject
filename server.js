@@ -56,7 +56,7 @@ function CreateTextMessage(data){
         clientMsg.messages
             .create({
                 body: `Hello, 
-                \n${data.FirstName}, ${data.LastName} has signed in for a ${data.Time} Appointment on ${data.Date} requested service for ${data.Description}`,
+                \n${data.FirstName}, ${data.LastName} has signed in for a ${data.Time} Appointment on ${data.Date} requested service for ${data.Description}.\nContact info : +1${data.Phone}`,
                 messagingServiceSid: 'MG7bbd293395a80dfa3871da1f90050c34',
                 to: '+13132932246'
             })
@@ -119,6 +119,9 @@ const requestFormSchema = new mongoose.Schema({
     },
     Email:{
         type:String
+    },
+    Phone:{
+      type:Number
     },
     Date:{
         type:String
@@ -216,7 +219,8 @@ cron.schedule('0 0 10 5 1-12 *', ()=>{
   })
   .then(data2 =>{
     transporter.sendMail({
-      to: 'ptlfitnessllc@gmail.com',
+      // to: 'ptlfitnessllc@gmail.com',
+      to: 'singamsettyphanindra@gmail.com',
       from: 'pushthelimitfit@gmail.com',
       subject: 'Report for health assessment',
       html: '<p>Hello,</p><br><p>This report contians all data of health assessment</p>',
@@ -229,6 +233,8 @@ cron.schedule('0 0 10 5 1-12 *', ()=>{
     }).catch(err =>{
       console.log('Error in sending : ',err);
     });
+  }).then(data =>{
+    SelfAssess.remove({});
   });
 }, {
   scheduled: true,
@@ -300,10 +306,12 @@ app.post('/request_form',async (req,res)=>{
     data['FirstName'] = ToCapitalize(req.body['FirstName']);
     data['LastName'] = ToCapitalize(req.body['LastName']);
     data['Email'] = req.body['Email'];
+    data['Phone'] = req.body['Phone'];
     data['Date'] = req.body['date'];
     data['Time'] = req.body['time'];
     data['Description'] = req.body['Description'];
     data['TimeStamp'] = dateTime();
+    console.log(data);
     let RequestFormModel = new RequestForm(data);
     await RequestFormModel.save();
 
@@ -318,7 +326,7 @@ app.get('/payment',(req,res)=>{
     res.render('payment');
 });
 const client = new Client({
-    environment: Environment.Sandbox,
+    environment: Environment.Production,
     accessToken: accessToken,
   });
   
