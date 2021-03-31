@@ -273,7 +273,7 @@ cron.schedule('0 1 10 5 1-12 *', ()=>{
       }]
     }).then(data =>{
       console.log('Sent mail sucessfully!!',data);
-        SelfAssess.deleteMany({}, (result) =>{
+      PaymentForm.deleteMany({}, (result) =>{
             console.log(result);
         });
     }).catch(err =>{
