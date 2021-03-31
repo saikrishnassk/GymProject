@@ -107,7 +107,7 @@
                 <h1 style="margin-top: 1rem;"><span class="font-extra-bold no-margins text-success" style="float: left;"> Request Info</span></h1>
             </div>
         </div>
-        <form action="request_form" method="POST" id="request_form" style="margin-top: 1rem">
+        <form action="request_form" autocomplete="off" method="POST" id="request_form" style="margin-top: 1rem">
             <div class="field-wrap">
 
                 <div class="field">
@@ -132,10 +132,10 @@
                     </div>
                 </div>
                 <div class="field">
-                    <label class="label is-small">Phone</label>
+                    <label class="label is-small">Phone Number [+1 ]</label>
                     <div class="control has-icons-left">
-                        <input id="phone" class="input is-info is-small" type="number" placeholder="Phone" name="Phone" >
-                        <span class="icon is-left">+1</span>
+                        <input id="phone" class="input is-info is-small" maxlength="10" pattern="[1-9]{1}[0-9]{9}" type="text" placeholder="1234567890" name="Phone" >
+                        <span class="icon is-left"><i class="fas fa-phone"></i></span>
                     </div>
                 </div>
                 <div class="field">
@@ -176,7 +176,7 @@
                             <button class="delete" aria-label="close"></button>
                         </header>
                         <section class="modal-card-body">
-                            We look forward to see you
+                            We look forward to seeing you
                         </section>
                         <footer class="modal-card-foot">
                             <button class="button is-success" id="confirm">Confirm</button>
@@ -242,6 +242,8 @@
             let form_date = $('#form_date').val();
             let form_time = $('#form_time').val();
             let description = $('#description').val();
+            let phoneno = /^\d{10}$/;
+            var phone_matching = phone.match(phoneno);
 
             var tim = /((1[0-2]|0?[1-9]):([0-5][0-9]) ?([AaPp][Mm]))/;
 
@@ -275,7 +277,7 @@
                 $(this).focus();
                 return false;
             }
-            if (  phone.toString().length !== 10 ) {
+            if (  phone_matching === null ) {
                 alert("Please enter valid Phone number.");
                 valid = false;
                 $(this).focus();

@@ -94,6 +94,7 @@
   }
   #payment-amount{
     padding:25px;
+      font-size: 19px;
   }
   .dollar-symbol{
     position: absolute;

@@ -1,6 +1,6 @@
 
 //TODO: paste code from step 2.1.1
-let sqaure_application_id='sq0idp-7OxEyTsDKwKFnMcZu_SFzg',square_location_id="EESJP8FE4016M";
+let sqaure_application_id='sq0idp-7OxEyTsDKwKFnMcZu_SFzg',square_location_id='EESJP8FE4016M';
     const idempotency_key = uuidv4();
     // Create and initialize a payment form object
     const paymentForm = new SqPaymentForm({
@@ -119,13 +119,13 @@ let sqaure_application_id='sq0idp-7OxEyTsDKwKFnMcZu_SFzg',square_location_id="EE
             errors.forEach(function (error) {
                 console.error('  ' + error.message);
             });
-            alert('Encountered errors, check browser developer console for more details');
+            alert('Please enter valid card details');
                 return;
         }
         //TODO: Replace alert with code in step 2.1
         //$('#Amount').val()
-        var amount = document.getElementById("payment-amount").value;
-        var name = document.getElementById("payment-name").value;
+        var amount = document.getElementById('payment-amount').value;
+        var name = document.getElementById('payment-name').value;
         fetch('process-payment', {
 method: 'POST',
 headers: {
@@ -152,13 +152,13 @@ return response.json();
 })
 .then(data => {
 // console.log(data);
-alert('Payment complete successfully!');
-window.location.replace("https://www.pushthelimitfit.com/");
+alert('Payment completed successfully!');
+window.location.replace('https://www.pushthelimitfit.com/');
 })
 .catch(err => {
 console.error(err);
 alert('Payment failed to complete!');
-window.location.replace("https://www.pushthelimitfit.com/");
+window.location.replace('https://www.pushthelimitfit.com/');
 });
 
         // alert(`The generated nonce is:\n${nonce}`);

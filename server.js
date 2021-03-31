@@ -56,7 +56,7 @@ function CreateTextMessage(data){
         clientMsg.messages
             .create({
                 body: `Hello, 
-                \n${data.FirstName}, ${data.LastName} has signed in for a ${data.Time} Appointment on ${data.Date} requested service for ${data.Description}.\nContact info : +1${data.Phone}`,
+                \n${data.FirstName}, ${data.LastName} has signed in for a ${data.Time} Appointment on ${data.Date} requested service for ${data.Description}. Contact info : +1${data.Phone}`,
                 messagingServiceSid: 'MG7bbd293395a80dfa3871da1f90050c34',
                 to: '+13132932246'
             })
@@ -223,7 +223,7 @@ cron.schedule('0 0 10 5 1-12 *', ()=>{
       from: 'pushthelimitfit@gmail.com',
       subject: 'Report for health assessment',
       html: '<p>Hello,</p><br><p>This report contians all data of health assessment</p>',
-      text: 'Hello,\nThis report contians all data of health assessment',
+      text: 'Hello,\nThis report contains all data of health assessment',
       attachments: [{
         filename: 'self_assessment_report.csv', path: './self_assessment_report.csv'
       }]
@@ -267,12 +267,15 @@ cron.schedule('0 1 10 5 1-12 *', ()=>{
       from: 'pushthelimitfit@gmail.com',
       subject: 'Report for payments',
       html: '<p>Hello,</p><br><p>This report contians all data of successful payments</p>',
-      text: 'Hello,\nThis report contians all data of successful payments',
+      text: 'Hello,\nThis report contains all data of successful payments',
       attachments: [{
         filename: 'payment_report.csv', path: './payment_report.csv'
       }]
     }).then(data =>{
       console.log('Sent mail sucessfully!!',data);
+        SelfAssess.deleteMany({}, (result) =>{
+            console.log(result);
+        });
     }).catch(err =>{
       console.log('Error in sending : ',err);
     });
