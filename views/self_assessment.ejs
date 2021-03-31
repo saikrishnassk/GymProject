@@ -149,8 +149,51 @@
         });
 
         $('#submit-btn, #submit-btn-bar').click(function(event){
-            $('.modal').css('display', 'block');
+            // event.preventDefault();
+            let valid = true;
+            let name = $('#name').val();
+            let question1 = $("input[name='q1_yes']:checked").val();
+            let question2 = $("input[name='q2_yes']:checked").val();
+            let question3 = $("input[name='q3_yes']:checked").val();
+            name = name.trim();
+
+            if ( name === "" ) {
+
+                alert("Please enter name.");
+                valid = false;
+                $(this).focus();
+                return false;
+            }
+            if ( question1 === undefined ) {
+
+                alert("Please select first option");
+                valid = false;
+                $(this).focus();
+                return false;
+            }
+            if ( question2 === undefined ) {
+            alert("Please select second option");
+            valid = false;
+            $(this).focus();
+            return false;
+            }
+
+            if ( question3 === undefined ) {
+            alert("Please select third option");
+            valid = false;
+            $(this).focus();
+            return false;
+            }
+
+            if ( valid ){
+
+                $('.modal').css('display', 'block');
+
+                document.getElementById('daily_assessment').submit();
+            }
+            return valid;
         });
+        
     });
 
 </script>
