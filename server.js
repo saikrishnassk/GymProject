@@ -100,7 +100,7 @@ function CreateTextMessageCovid(data){
       clientMsg.messages
           .create({
               body: `
-              ${data.Name} has selected "Yes" in one of the questions in COVID self assessment`,
+              ${data.Name} has selected "Yes" in one of the questions in the COVID self-assessment`,
               messagingServiceSid: 'MG7bbd293395a80dfa3871da1f90050c34',
               to: '+13132932246'
           })
@@ -244,7 +244,7 @@ cron.schedule('0 0 10 5 1-12 *', ()=>{
       to: 'ptlfitnessllc@gmail.com',
       from: 'pushthelimitfit@gmail.com',
       subject: 'Report for health assessment',
-      html: '<p>Hello,</p><br><p>This report contians all data of health assessment</p>',
+      html: '<p>Hello,</p><br><p>This report contains all data of health assessment</p>',
       text: 'Hello,\nThis report contains all data of health assessment',
       attachments: [{
         filename: 'self_assessment_report.csv', path: './self_assessment_report.csv'
@@ -288,7 +288,7 @@ cron.schedule('0 1 10 5 1-12 *', ()=>{
       to: 'ptlfitnessllc@gmail.com',
       from: 'pushthelimitfit@gmail.com',
       subject: 'Report for payments',
-      html: '<p>Hello,</p><br><p>This report contians all data of successful payments</p>',
+      html: '<p>Hello,</p><br><p>This report contains all data of successful payments</p>',
       text: 'Hello,\nThis report contains all data of successful payments',
       attachments: [{
         filename: 'payment_report.csv', path: './payment_report.csv'
@@ -330,7 +330,7 @@ app.post('/self_assis',async (req,res)=>{
       html: `<p>${data.Name}’s Covid self assessment</p><br><p>Option 1 : ${data.Answers[0]}</p><br><p>Option 2 : ${data.Answers[1]}</p><br><p>Option 3 : ${data.Answers[2]}</p>`,
       text: `${data.Name}\nOption 1 : ${data.Answers[0]}\nOption 2 : ${data.Answers[1]}\nOption 3 : ${data.Answers[2]}`
     }).then(data =>{
-      console.log('Sent mail sucessfully!!',data);
+      console.log('Sent mail successfully!!',data);
     }).catch(err =>{
       console.log('Error in sending : ',err);
     });
