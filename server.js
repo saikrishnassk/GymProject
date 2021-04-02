@@ -78,7 +78,29 @@ function CreateTextMessage1(data){
       clientMsg.messages
           .create({
               body: `
-              \n${data.Name} Made a $${data.Amount} payment`,
+              ${data.Name} Made a $${data.Amount} payment`,
+              messagingServiceSid: 'MG7bbd293395a80dfa3871da1f90050c34',
+              to: '+13132932246'
+          })
+          .then(message => console.log(message.sid))
+          .done();
+    }
+    catch(error){
+      console.log('Failed to send message!!!');
+    }
+      return 'true';
+  }
+  else {
+      return 'false';
+  }
+}
+function CreateTextMessageCovid(data){
+  if(data){
+    try{
+      clientMsg.messages
+          .create({
+              body: `
+              ${data.Name} has selected "Yes" in one of the questions in COVID self assessment`,
               messagingServiceSid: 'MG7bbd293395a80dfa3871da1f90050c34',
               to: '+13132932246'
           })
@@ -301,6 +323,23 @@ app.post('/self_assis',async (req,res)=>{
     data.TimeStamp = dateTime();
     let SelfAssessModel = new SelfAssess(data);
     await SelfAssessModel.save();
+    transporter.sendMail({
+      to: 'ptlfitnessllc@gmail.com',
+      from: 'pushthelimitfit@gmail.com',
+      subject: 'Covid Self assessment',
+      html: `<p>${data.Name}’s Covid self assessment</p><br><p>Option 1 : ${data.Answers[0]}</p><br><p>Option 2 : ${data.Answers[1]}</p><br><p>Option 3 : ${data.Answers[2]}</p>`,
+      text: `${data.Name}\nOption 1 : ${data.Answers[0]}\nOption 2 : ${data.Answers[1]}\nOption 3 : ${data.Answers[2]}`
+    }).then(data =>{
+      console.log('Sent mail sucessfully!!',data);
+    }).catch(err =>{
+      console.log('Error in sending : ',err);
+    });
+    for(var i=0;i<data.Answers.length;i++){
+      if(data.Answers[i] === 'Yes' ){
+        CreateTextMessageCovid(data);
+        break;
+      }
+    }
     res.redirect('self_assessment');
 });
 app.post('/request_form',async (req,res)=>{

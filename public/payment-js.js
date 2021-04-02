@@ -173,6 +173,16 @@ function onGetCardNonce(event) {
 // Don't submit the form until SqPaymentForm returns with a nonce
 event.preventDefault();
 // Request a nonce from the SqPaymentForm object
+var amount = document.getElementById('payment-amount').value.toString();
+var name = document.getElementById('payment-name').value.trim();
+if(name === "" || name === undefined || name === null){
+  alert("Please enter your Name.");
+  return false;
+}
+if(amount.length === 0 || amount === "" || amount === undefined || amount === null){
+  alert("Please enter valid amount.");
+  return false;
+}
 paymentForm.requestCardNonce();
 }
 paymentForm.build();
