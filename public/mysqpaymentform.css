@@ -41,8 +41,33 @@
     margin: 0 auto;
     top: 50%;
     transform: translateY(-50%);
+    background: #f2f2f2;
+    box-shadow: 3px 3px 3px #d2d2d2, -3px -3px 3px #d3d3d3;
+    padding: 10px;
+    box-sizing: border-box;
   }
-  
+  .first-heading{
+    font-size: 13px;
+    padding: 0px 3px;
+    font-weight: 200;
+  }
+  .first-heading h5{
+    margin: 15px 0px;
+  }
+  .second-heading{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0px 0px 0px;
+    font-size: 24px;
+  }
+  .second-heading span{
+    display: flex;
+    align-items: center;
+  }
+  .second-heading span img{
+    margin-right: 5px;
+  }
   .third {
     float: left;
     width: calc((100% - 32px) / 3);
@@ -81,7 +106,7 @@
   #sq-card-number {
     margin-bottom: 16px;
   }
-  #payment-amount,#payment-name{
+  #payment-amount,#payment-name,#payment-note{
       box-sizing: border-box;
       width: 100%;
       height: 56px;
@@ -98,8 +123,8 @@
   }
   .dollar-symbol{
     position: absolute;
-    left:15px;
-    top:90px;
+    left: 23px;
+    top: 185px;
   }
   /* Customize the "Pay with Credit Card" button */
   .button-credit-card {
@@ -185,6 +210,7 @@
     padding:5px;
   }
   .dollar-symbol{
-    top:95px;
+    top: 180px;
+    left: 18px;
   }
 }

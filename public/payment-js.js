@@ -126,6 +126,7 @@ let sqaure_application_id='sq0idp-7OxEyTsDKwKFnMcZu_SFzg',square_location_id='EE
         //$('#Amount').val()
         var amount = document.getElementById('payment-amount').value;
         var name = document.getElementById('payment-name').value;
+        var note = document.getElementById('payment-note').value;
         fetch('process-payment', {
 method: 'POST',
 headers: {
@@ -135,6 +136,7 @@ headers: {
 body: JSON.stringify({
 name:name,
 amount:amount,
+note:note,
 nonce: nonce,
 idempotency_key: idempotency_key,
 location_id: `${square_location_id}`

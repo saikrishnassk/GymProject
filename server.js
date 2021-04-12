@@ -41,7 +41,8 @@ const csvWriter1 = createCsvWriter({
   header: [
       {id: 'name', title: 'NAME'},
       {id: 'amount', title: 'AMOUNT'},
-      {id: 'date', title: 'DATE'}
+      {id: 'date', title: 'DATE'},
+      {id: 'note', title: 'NOTE'}
   ]
 });
 
@@ -78,7 +79,7 @@ function CreateTextMessage1(data){
       clientMsg.messages
           .create({
               body: `
-              ${data.Name} Made a $${data.Amount} payment`,
+              ${data.Name} Made a $${data.Amount} payment, Note: ${data.Note}`,
               messagingServiceSid: 'MG7bbd293395a80dfa3871da1f90050c34',
               to: '+13132932246'
           })
@@ -169,6 +170,9 @@ const paymentFormSchema = new mongoose.Schema({
   },
   TimeStamp:{
       type:String
+  },
+  Note:{
+    type:String
   }
 });
 const PaymentForm = mongoose.model('PaymentForm',paymentFormSchema);
@@ -272,6 +276,7 @@ cron.schedule('0 1 10 5 1-12 *', ()=>{
       element_row['name']=data[i]['Name'];
       element_row['amount']=data[i]['Amount'];
       element_row['date']=data[i]['TimeStamp'].slice(0,10);
+      element_row['note']=data[i]['Note'];
       records.push(element_row);
     }  
   }).then(data1 =>{
@@ -377,9 +382,11 @@ const client = new Client({
     let data = {};
     const name = ToCapitalize(requestParams.name);
     const amount = requestParams.amount;
+    const note = requestParams.note;
     data['Name']=name;
     data['Amount']=amount;
     data['TimeStamp']=dateTime();
+    data['Note']=note;
     console.log(name,amount);
     // Charge the customer's card
     const paymentsApi = client.paymentsApi;
