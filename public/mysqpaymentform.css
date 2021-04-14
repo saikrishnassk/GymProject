@@ -52,18 +52,18 @@
     font-weight: 200;
   }
   .first-heading h5{
-    margin: 15px 0px;
+    margin: 0;
   }
   .second-heading{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 0px 0px 0px;
     font-size: 24px;
   }
   .second-heading span{
     display: flex;
     align-items: center;
+    margin: 10px 0px 15px;
   }
   .second-heading span img{
     margin-right: 5px;
@@ -124,7 +124,7 @@
   .dollar-symbol{
     position: absolute;
     left: 23px;
-    top: 185px;
+    top: 170px;
   }
   /* Customize the "Pay with Credit Card" button */
   .button-credit-card {
@@ -210,7 +210,7 @@
     padding:5px;
   }
   .dollar-symbol{
-    top: 180px;
+    top: 166px;
     left: 18px;
   }
 }
