@@ -45,33 +45,81 @@ const csvWriter1 = createCsvWriter({
       {id: 'note', title: 'NOTE'}
   ]
 });
-
+const csvWriter2 = createCsvWriter({
+  path: 'request_form_report.csv',
+  header: [
+    {id: 'firstname', title: 'FIRST NAME'},
+    {id: 'lastname', title: 'LAST NAME'},
+    {id: 'email', title: 'EMAIL'},
+    {id: 'phone', title: 'PHONE'},
+    {id: 'isInGym', title: 'Is In Gym'},
+    {id: 'time', title: 'TIME'},
+    {id: 'date', title: 'DATE'},
+    {id: 'description', title: 'DESCRIPTION'},
+    {id: 'paymentMode', title: 'PAYMENT MODE'},
+    {id: 'createdOn', title: 'CREATED ON'}
+  ]
+});
 function ToCapitalize(arr){
   if(arr==='' || arr===undefined) {return '';}
   return arr.charAt(0).toUpperCase()+arr.slice(1).toLowerCase();
 }
 
-function CreateTextMessage(data){
-    if(data){
-      try{
-        clientMsg.messages
-            .create({
-                body: `Hello, 
-                \n${data.FirstName}, ${data.LastName} has signed in for a ${data.Time} Appointment on ${data.Date} requested service for ${data.Description}. Contact info : +1${data.Phone}`,
-                messagingServiceSid: 'MG7bbd293395a80dfa3871da1f90050c34',
-                to: '+13132932246'
-            })
-            .then(message => console.log(message.sid))
-            .done();
-      }
-      catch(error){
-        console.log('Failed to send message!!!');
-      }
-        return 'true';
+function CreateTextMessage(data, isCovid = false){
+  if(data && data.Ingym === "Yes" && isCovid){
+    try{
+      clientMsg.messages
+          .create({
+              body: `Hello, 
+              \n${data.FirstName}, ${data.LastName} has Covid symptoms and requested service for ${data.Description}. Contact info : +1${data.Phone}`,
+              messagingServiceSid: 'MG7bbd293395a80dfa3871da1f90050c34',
+              to: '+13132932246'
+          })
+          .then(message => console.log(message.sid))
+          .done();
     }
-    else {
-        return 'false';
+    catch(error){
+      console.log('Failed to send message!!!');
     }
+      return 'true';
+  }
+  else if(data && data.Ingym === "Yes"){
+    try{
+      clientMsg.messages
+          .create({
+              body: `Hello, 
+              \n${data.FirstName}, ${data.LastName} has requested service for ${data.Description}. Contact info : +1${data.Phone}`,
+              messagingServiceSid: 'MG7bbd293395a80dfa3871da1f90050c34',
+              to: '+13132932246'
+          })
+          .then(message => console.log(message.sid))
+          .done();
+    }
+    catch(error){
+      console.log('Failed to send message!!!');
+    }
+      return 'true';
+  }
+  else if(data){
+    try{
+      clientMsg.messages
+          .create({
+              body: `Hello, 
+              \n${data.FirstName}, ${data.LastName} has signed in for a ${data.Time} Appointment on ${data.Date} requested service for ${data.Description}. Contact info : +1${data.Phone}`,
+              messagingServiceSid: 'MG7bbd293395a80dfa3871da1f90050c34',
+              to: '+13132932246'
+          })
+          .then(message => console.log(message.sid))
+          .done();
+    }
+    catch(error){
+      console.log('Failed to send message!!!');
+    }
+      return 'true';
+  }
+  else {
+      return 'false';
+  }
 }
 function CreateTextMessage1(data){
   if(data){
@@ -146,6 +194,9 @@ const requestFormSchema = new mongoose.Schema({
     Phone:{
       type:Number
     },
+    IsInGym:{
+      type:String
+    },
     Date:{
         type:String
     },
@@ -154,6 +205,9 @@ const requestFormSchema = new mongoose.Schema({
     },
     Description:{
         type:String
+    },
+    PaymentMode:{
+      type:String
     },
     TimeStamp:{
         type:String
@@ -220,7 +274,17 @@ function compare_name(a, b) {
   }
   return comparison;
 }
-
+function compare_name1(a, b) {
+  const bandA = a.firstname.toUpperCase();
+  const bandB = b.firstname.toUpperCase();
+  let comparison = 0;
+  if (bandA > bandB) {
+    comparison = 1;
+  } else if (bandA < bandB) {
+    comparison = -1;
+  }
+  return comparison;
+}
 cron.schedule('0 0 10 5 1-12 *', ()=>{
   console.log('Hi there');
   let records = [];
@@ -268,6 +332,57 @@ cron.schedule('0 0 10 5 1-12 *', ()=>{
 })
 
 cron.schedule('0 1 10 5 1-12 *', ()=>{
+  console.log('Hi there');
+  let records = [];
+  RequestForm.find({}).then(data =>{
+    for(var i=0;i<data.length;i++){
+      let element_row={};
+      element_row['firstname']=data[i]['FirstName'];
+      element_row['lastname']=data[i]['LastName'];
+      element_row['email']=data[i]['Email'];
+      element_row['phone']=data[i]['Phone'];
+      element_row['isInGym']=data[i]['IsInGym'];
+      element_row['time']=data[i]['Time'];
+      element_row['date']=data[i]['Date'];
+      element_row['description']=data[i]['Description'];
+      element_row['paymentMode']=data[i]['PaymentMode'];
+      element_row['createdOn']=data[i]['TimeStamp'];
+      records.push(element_row);
+    }  
+  }).then(data1 =>{
+    records.sort(compare_name1);
+    console.log(records);
+    csvWriter2.writeRecords(records)       // returns a promise
+    .then(() => {
+        console.log('...Done');
+    });
+
+  })
+  .then(data2 =>{
+    transporter.sendMail({
+      to: 'ptlfitnessllc@gmail.com',
+      from: 'pushthelimitfit@gmail.com',
+      subject: 'Report for Request form',
+      html: '<p>Hello,</p><br><p>This report contains all data of Scheduled Requests</p>',
+      text: 'Hello,\nThis report contains all data of Scheduled Requests',
+      attachments: [{
+        filename: 'request_form_report.csv', path: './request_form_report.csv'
+      }]
+    }).then(data =>{
+      console.log('Sent mail sucessfully!!',data);
+      RequestForm.deleteMany({}, (result) =>{
+        console.log(result);
+      });
+    }).catch(err =>{
+      console.log('Error in sending : ',err);
+    });
+  });
+}, {
+  scheduled: true,
+  timezone: 'America/Detroit'
+})
+
+cron.schedule('0 2 10 5 1-12 *', ()=>{
   console.log('Hi there');
   let records = [];
   PaymentForm.find({}).then(data =>{
@@ -352,17 +467,50 @@ app.post('/request_form',async (req,res)=>{
     let data={};
     data['FirstName'] = ToCapitalize(req.body['FirstName']);
     data['LastName'] = ToCapitalize(req.body['LastName']);
+    data['IsInGym'] = req.body['Ingym'];
     data['Email'] = req.body['Email'];
     data['Phone'] = req.body['Phone'];
-    data['Date'] = req.body['date'];
-    data['Time'] = req.body['time'];
     data['Description'] = req.body['Description'];
+    data['PaymentMode'] = req.body['PaymentMode']
     data['TimeStamp'] = dateTime();
+    if(data['IsInGym'] == "Yes"){
+      data['Date'] = '';
+      data['Time'] = '';
+    }
+    else{
+      data['Date'] = req.body['date'];
+      data['Time'] = req.body['time'];
+    }
     console.log(data);
-    let RequestFormModel = new RequestForm(data);
-    await RequestFormModel.save();
+    let isCovid =false;
+    let arr = [req.body['q1_yes'],req.body['q2_yes'],req.body['q3_yes']];
+    for(var i=0;i<arr.length;i++){
+      if(arr[i] === 'Yes' ){
+        isCovid = true;
+        break;
+      }
+    }
+    try{
+      let RequestFormModel = new RequestForm(data);
+      await RequestFormModel.save();  
+    }
+    catch(err){
+      console.log(err);
+    }
+    
+    if(data['IsInGym'] === "Yes"){
 
-    CreateTextMessage(data);
+        let data1 = {};
+        data1.Name = data["FirstName"];
+        const questions = ['Have you experienced any of the following symptoms in the past 48 hours: Fever or Chills, Cough, Shortness of breathing or difficulty breathing, fatigue, muscle or body aches, headache, loss of taste or smell, sore throat, congestion or runny nose, nausea or vomiting, diarrhe','Have you had close contact with a laboratory confirmed case of COVID-19 in the last 14 days?','Was your daily temperature self-screening greater than 100.4 degrees fahrenheit?'];
+        data1.Questions = questions;
+        data1.Answers = arr;
+        data1.TimeStamp = data.TimeStamp;
+        let SelfAssessModel = new SelfAssess(data1);
+        await SelfAssessModel.save();
+        
+    }
+    CreateTextMessage(data,isCovid);
     res.redirect('request_form');
 });
 
