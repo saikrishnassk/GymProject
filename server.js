@@ -26,16 +26,6 @@ const connectDB = async () =>{
 connectDB();
 
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
-const csvWriter = createCsvWriter({
-    path: 'self_assessment_report.csv',
-    header: [
-        {id: 'name', title: 'NAME'},
-        {id: 'question1', title: 'Have you experienced any of the following symptoms in the past 48 hours: Fever or Chills, Cough, Shortness of breathing or difficulty breathing, fatigue, muscle or body aches, headache, loss of taste or smell, sore throat, congestion or runny nose, nausea or vomiting, diarrhe'},
-        {id: 'question2', title: 'Have you had close contact with a laboratory confirmed case of COVID-19 in the last 14 days?'},
-        {id: 'question3', title: 'Was your daily temperature self-screening greater than 100.4 degrees fahrenheit?'},
-        {id: 'date', title: 'DATE'}
-    ]
-});
 const csvWriter1 = createCsvWriter({
   path: 'payment_report.csv',
   header: [
@@ -52,9 +42,9 @@ const csvWriter2 = createCsvWriter({
     {id: 'lastname', title: 'LAST NAME'},
     {id: 'email', title: 'EMAIL'},
     {id: 'phone', title: 'PHONE'},
-    {id: 'isInGym', title: 'Is In Gym'},
-    {id: 'time', title: 'TIME'},
-    {id: 'date', title: 'DATE'},
+    {id: 'question1', title: 'Have you experienced any of the following symptoms in the past 48 hours: Fever or Chills, Cough, Shortness of breathing or difficulty breathing, fatigue, muscle or body aches, headache, loss of taste or smell, sore throat, congestion or runny nose, nausea or vomiting, diarrhe'},
+    {id: 'question2', title: 'Have you had close contact with a laboratory confirmed case of COVID-19 in the last 14 days?'},
+    {id: 'question3', title: 'Was your daily temperature self-screening greater than 100.4 degrees fahrenheit?'},
     {id: 'description', title: 'DESCRIPTION'},
     {id: 'paymentMode', title: 'PAYMENT MODE'},
     {id: 'createdOn', title: 'CREATED ON'}
@@ -66,7 +56,7 @@ function ToCapitalize(arr){
 }
 
 function CreateTextMessage(data, isCovid = false){
-  if(data && data.Ingym === "Yes" && isCovid){
+  if(data && isCovid){
     try{
       clientMsg.messages
           .create({
@@ -83,29 +73,12 @@ function CreateTextMessage(data, isCovid = false){
     }
       return 'true';
   }
-  else if(data && data.Ingym === "Yes"){
-    try{
-      clientMsg.messages
-          .create({
-              body: `Hello, 
-              \n${data.FirstName}, ${data.LastName} has requested service for ${data.Description}. Contact info : +1${data.Phone}`,
-              messagingServiceSid: 'MG7bbd293395a80dfa3871da1f90050c34',
-              to: '+13132932246'
-          })
-          .then(message => console.log(message.sid))
-          .done();
-    }
-    catch(error){
-      console.log('Failed to send message!!!');
-    }
-      return 'true';
-  }
   else if(data){
     try{
       clientMsg.messages
           .create({
               body: `Hello, 
-              \n${data.FirstName}, ${data.LastName} has signed in for a ${data.Time} Appointment on ${data.Date} requested service for ${data.Description}. Contact info : +1${data.Phone}`,
+              \n${data.FirstName}, ${data.LastName} has requested service for ${data.Description}. Contact info : +1${data.Phone}`,
               messagingServiceSid: 'MG7bbd293395a80dfa3871da1f90050c34',
               to: '+13132932246'
           })
@@ -143,44 +116,6 @@ function CreateTextMessage1(data){
       return 'false';
   }
 }
-function CreateTextMessageCovid(data){
-  if(data){
-    try{
-      clientMsg.messages
-          .create({
-              body: `
-              ${data.Name} has selected "Yes" in one of the questions in the COVID self-assessment`,
-              messagingServiceSid: 'MG7bbd293395a80dfa3871da1f90050c34',
-              to: '+13132932246'
-          })
-          .then(message => console.log(message.sid))
-          .done();
-    }
-    catch(error){
-      console.log('Failed to send message!!!');
-    }
-      return 'true';
-  }
-  else {
-      return 'false';
-  }
-}
-const selfAssessmentSchema = new mongoose.Schema({
-    Name:{
-      type: String
-    },
-    Questions:{
-        type:Array
-    },
-    Answers:{
-        type:Array
-    },
-    TimeStamp:{
-        type:String
-    }
-  });
-const SelfAssess = mongoose.model('SelfAssessment',selfAssessmentSchema);
-
 const requestFormSchema = new mongoose.Schema({
     FirstName:{
         type:String
@@ -194,14 +129,11 @@ const requestFormSchema = new mongoose.Schema({
     Phone:{
       type:Number
     },
-    IsInGym:{
-      type:String
+    Questions:{
+      type:Array
     },
-    Date:{
-        type:String
-    },
-    Time:{
-        type:String
+    Answers:{
+        type:Array
     },
     Description:{
         type:String
@@ -288,52 +220,6 @@ function compare_name1(a, b) {
 cron.schedule('0 0 10 5 1-12 *', ()=>{
   console.log('Hi there');
   let records = [];
-  SelfAssess.find({}).then(data =>{
-    for(var i=0;i<data.length;i++){
-      let element_row={};
-      element_row['name']=data[i]['Name'];
-      element_row['question1']=data[i]['Answers'][0];
-      element_row['question2']=data[i]['Answers'][1];
-      element_row['question3']=data[i]['Answers'][2];
-      element_row['date']=data[i]['TimeStamp'].slice(0,10);
-      records.push(element_row);
-    }  
-  }).then(data1 =>{
-    records.sort(compare_name);
-    console.log(records);
-    csvWriter.writeRecords(records)       // returns a promise
-    .then(() => {
-        console.log('...Done');
-    });
-
-  })
-  .then(data2 =>{
-    transporter.sendMail({
-      to: 'ptlfitnessllc@gmail.com',
-      from: 'pushthelimitfit@gmail.com',
-      subject: 'Report for health assessment',
-      html: '<p>Hello,</p><br><p>This report contains all data of health assessment</p>',
-      text: 'Hello,\nThis report contains all data of health assessment',
-      attachments: [{
-        filename: 'self_assessment_report.csv', path: './self_assessment_report.csv'
-      }]
-    }).then(data =>{
-      console.log('Sent mail sucessfully!!',data);
-      SelfAssess.deleteMany({}, (result) =>{
-        console.log(result);
-      });
-    }).catch(err =>{
-      console.log('Error in sending : ',err);
-    });
-  });
-}, {
-  scheduled: true,
-  timezone: 'America/Detroit'
-})
-
-cron.schedule('0 1 10 5 1-12 *', ()=>{
-  console.log('Hi there');
-  let records = [];
   RequestForm.find({}).then(data =>{
     for(var i=0;i<data.length;i++){
       let element_row={};
@@ -341,9 +227,9 @@ cron.schedule('0 1 10 5 1-12 *', ()=>{
       element_row['lastname']=data[i]['LastName'];
       element_row['email']=data[i]['Email'];
       element_row['phone']=data[i]['Phone'];
-      element_row['isInGym']=data[i]['IsInGym'];
-      element_row['time']=data[i]['Time'];
-      element_row['date']=data[i]['Date'];
+      element_row['question1']=data[i]['Answers'][0];
+      element_row['question2']=data[i]['Answers'][1];
+      element_row['question3']=data[i]['Answers'][2];
       element_row['description']=data[i]['Description'];
       element_row['paymentMode']=data[i]['PaymentMode'];
       element_row['createdOn']=data[i]['TimeStamp'];
@@ -431,59 +317,22 @@ cron.schedule('0 2 10 5 1-12 *', ()=>{
 app.post('/feedback',(req,res)=>{
     res.render('index');
 });
-app.post('/self_assis',async (req,res)=>{
-
-    let data = {};
-
-    data.Name = ToCapitalize(req.body['Name']);
-    const questions = ['Have you experienced any of the following symptoms in the past 48 hours: Fever or Chills, Cough, Shortness of breathing or difficulty breathing, fatigue, muscle or body aches, headache, loss of taste or smell, sore throat, congestion or runny nose, nausea or vomiting, diarrhe','Have you had close contact with a laboratory confirmed case of COVID-19 in the last 14 days?','Was your daily temperature self-screening greater than 100.4 degrees fahrenheit?'];
-    const answers = [req.body['q1_yes'],req.body['q2_yes'],req.body['q3_yes']];
-    data.Questions = questions;
-    data.Answers = answers;
-    data.TimeStamp = dateTime();
-    let SelfAssessModel = new SelfAssess(data);
-    await SelfAssessModel.save();
-    transporter.sendMail({
-      to: 'ptlfitnessllc@gmail.com',
-      from: 'pushthelimitfit@gmail.com',
-      subject: 'Covid Self assessment',
-      html: `<p>${data.Name}’s Covid self assessment</p><br><p>Option 1 : ${data.Answers[0]}</p><br><p>Option 2 : ${data.Answers[1]}</p><br><p>Option 3 : ${data.Answers[2]}</p>`,
-      text: `${data.Name}\nOption 1 : ${data.Answers[0]}\nOption 2 : ${data.Answers[1]}\nOption 3 : ${data.Answers[2]}`
-    }).then(data =>{
-      console.log('Sent mail successfully!!',data);
-    }).catch(err =>{
-      console.log('Error in sending : ',err);
-    });
-    for(var i=0;i<data.Answers.length;i++){
-      if(data.Answers[i] === 'Yes' ){
-        CreateTextMessageCovid(data);
-        break;
-      }
-    }
-    res.redirect('self_assessment');
-});
 app.post('/request_form',async (req,res)=>{
 
     let data={};
     data['FirstName'] = ToCapitalize(req.body['FirstName']);
     data['LastName'] = ToCapitalize(req.body['LastName']);
-    data['IsInGym'] = req.body['Ingym'];
     data['Email'] = req.body['Email'];
     data['Phone'] = req.body['Phone'];
     data['Description'] = req.body['Description'];
     data['PaymentMode'] = req.body['PaymentMode']
     data['TimeStamp'] = dateTime();
-    if(data['IsInGym'] == "Yes"){
-      data['Date'] = '';
-      data['Time'] = '';
-    }
-    else{
-      data['Date'] = req.body['date'];
-      data['Time'] = req.body['time'];
-    }
     console.log(data);
     let isCovid =false;
     let arr = [req.body['q1_yes'],req.body['q2_yes'],req.body['q3_yes']];
+    const questions = ['Have you experienced any of the following symptoms in the past 48 hours: Fever or Chills, Cough, Shortness of breathing or difficulty breathing, fatigue, muscle or body aches, headache, loss of taste or smell, sore throat, congestion or runny nose, nausea or vomiting, diarrhe','Have you had close contact with a laboratory confirmed case of COVID-19 in the last 14 days?','Was your daily temperature self-screening greater than 100.4 degrees fahrenheit?'];
+    data.Questions = questions;
+    data.Answers = arr;
     for(var i=0;i<arr.length;i++){
       if(arr[i] === 'Yes' ){
         isCovid = true;
@@ -497,20 +346,10 @@ app.post('/request_form',async (req,res)=>{
     catch(err){
       console.log(err);
     }
-    
-    if(data['IsInGym'] === "Yes"){
-
-        let data1 = {};
-        data1.Name = data["FirstName"];
-        const questions = ['Have you experienced any of the following symptoms in the past 48 hours: Fever or Chills, Cough, Shortness of breathing or difficulty breathing, fatigue, muscle or body aches, headache, loss of taste or smell, sore throat, congestion or runny nose, nausea or vomiting, diarrhe','Have you had close contact with a laboratory confirmed case of COVID-19 in the last 14 days?','Was your daily temperature self-screening greater than 100.4 degrees fahrenheit?'];
-        data1.Questions = questions;
-        data1.Answers = arr;
-        data1.TimeStamp = data.TimeStamp;
-        let SelfAssessModel = new SelfAssess(data1);
-        await SelfAssessModel.save();
-        
-    }
     CreateTextMessage(data,isCovid);
+    if(data.PaymentMode === "CreditDebit-card"){
+      res.redirect('payment');
+    }
     res.redirect('request_form');
 });
 

@@ -87,13 +87,10 @@
             <a class="navbar-item current-page" href="https://www.pushthelimitfit.com/contact">
                 Contact
             </a>
-
-            <a class="navbar-item current-page" href="https://www.pushthelimitfits.com/self_assessment">
-                Covid Health Assessment
-            </a>
+            
 
             <a class="navbar-item current-page" href="https://www.pushthelimitfits.com/payment">
-                Pay
+                Make a Payment
             </a>
 
         </div>
@@ -104,7 +101,7 @@
     <div class="container">
         <div class="hpanel">
             <div class="panel-body text-center h-200">
-                <h1 style="margin-top: 1rem;"><span class="font-extra-bold no-margins text-success" style="float: left;"> Request Info</span></h1>
+                <!-- <h1 style="margin-top: 1rem;"><span class="font-extra-bold no-margins text-success" style="float: left;"> Request Info</span></h1> -->
             </div>
         </div>
         <form action="request_form" autocomplete="off" method="POST" id="request_form" style="margin-top: 1rem">
@@ -122,6 +119,28 @@
                     <div class="control has-icons-left">
                         <input id="last_name" class="input is-info is-small" type="text" placeholder="Last Name" name="LastName">
                         <span class="icon is-left"><i class="far fa-circle"></i></span>
+                    </div>
+                </div>
+                <div class="field main-3" >
+                    <label class="label">Have you experienced any of the following symptoms in the past 48 hours:
+                        Fever or Chills, Cough, Shortness of breathing or difficulty breathing, fatigue, muscle or body aches, headache, loss of taste or smell, sore throat, congestion or runny nose, nausea or vomiting, diarrhea
+                    </label>
+                    <div class="control has-icons-left">
+                        <label class="radio"><input type="radio" name="q1_yes" value="Yes" required> Yes</label><label class="radio"><input type="radio" name="q1_yes" value="No"> No</label>
+                    </div>
+                </div>
+                <div class="field main-3" >
+                    <label class="label">Have you had close contact with a laboratory confirmed case of COVID-19 in the last 14 days?
+                    </label>
+                    <div class="control has-icons-left">
+                        <label class="radio"><input type="radio" name="q2_yes" value="Yes" required> Yes</label><label class="radio"><input type="radio" name="q2_yes" value="No"> No</label>
+                    </div>
+                </div>
+                <div class="field main-3" >
+                    <label class="label">Was your daily temperature self-screening greater than 100.4 degrees fahrenheit?
+                    </label>
+                    <div class="control has-icons-left">
+                        <label class="radio"><input type="radio" name="q3_yes" value="Yes" required> Yes</label><label class="radio"><input type="radio" name="q3_yes" value="No"> No</label>
                     </div>
                 </div>
                 <div class="field">
@@ -146,12 +165,11 @@
                                 <option value="">...</option>
                                 <option value="Bootcamp">Bootcamp ($15 per session)</option>
                                 <option value="Personal Session">Personal Session</option>
+                                <option value="Consultation">Consultation</option>
                             </select>
                         </div>
                         <span class="icon is-small is-left"><i class="fas fa-sort-alpha-down"></i></span>
 
-<!--                        <textarea id="description" class="input is-info is-small"  rows="2" name="Description"></textarea>-->
-<!--                        <span class="icon is-left"><i class="far fa-sticky-note"></i></span>-->
                     </div>
                 </div>
                 <div class="field">
@@ -160,65 +178,24 @@
                         <div class="select is-info is-small is-fullwidth">
                             <select id="payment_mode" name="PaymentMode">
                                 <option value="">...</option>
-                                <option value="Online">Online</option>
                                 <option value="Cash">Cash</option>
+                                <option value="CreditDebit-card">Credit/Debit card</option>
                                 <option value="Pre-paid">Pre-paid</option>
                             </select>
                         </div>
                         <span class="icon is-small is-left"><i class="fas fa-sort-alpha-down"></i></span>
                     </div>
                 </div>
-                <div class="field">
-                    <label class="label is-small">Are you in Gym?</label>
-                    <div class="control has-icons-left">
-                        <label class="radio"><input id="isInGym" type="radio" name="Ingym" value="Yes" required> Yes</label><label class="radio"><input id="isOutGym" type="radio" name="Ingym" value="No"> No</label>
-                    </div>
-                </div>
-                <div class="field main-3" style="display: none;">
-                    <label class="label">Have you experienced any of the following symptoms in the past 48 hours:
-                        Fever or Chills, Cough, Shortness of breathing or difficulty breathing, fatigue, muscle or body aches, headache, loss of taste or smell, sore throat, congestion or runny nose, nausea or vomiting, diarrhea
-                    </label>
-                    <div class="control has-icons-left">
-                        <label class="radio"><input type="radio" name="q1_yes" value="Yes" required> Yes</label><label class="radio"><input type="radio" name="q1_yes" value="No"> No</label>
-                    </div>
-                </div>
-                <div class="field main-3" style="display: none;">
-                    <label class="label">Have you had close contact with a laboratory confirmed case of COVID-19 in the last 14 days?
-                    </label>
-                    <div class="control has-icons-left">
-                        <label class="radio"><input type="radio" name="q2_yes" value="Yes" required> Yes</label><label class="radio"><input type="radio" name="q2_yes" value="No"> No</label>
-                    </div>
-                </div>
-                <div class="field main-3" style="display: none;">
-                    <label class="label">Was your daily temperature self-screening greater than 100.4 degrees fahrenheit?
-                    </label>
-                    <div class="control has-icons-left">
-                        <label class="radio"><input type="radio" name="q3_yes" value="Yes" required> Yes</label><label class="radio"><input type="radio" name="q3_yes" value="No"> No</label>
-                    </div>
-                </div>
-                <div class="field main-3-inv" style="display: none;">
-                    <label class="label is-small">Date of Appointment</label>
-                    <div class="control has-icons-left">
-                        <input id="form_date" class="input is-info is-small" placeholder="MM-DD-YYYY" type="text" name="date" >
-                        <span class="icon is-left"><i class="far fa-calendar-alt"></i></span>
-                    </div>
-                </div>
-                <div class="field main-3-inv" style="display: none;">
-                    <label class="label is-small">Time of Appointment</label>
-                    <div class="control has-icons-left">
-                        <input id="form_time" class="input is-info is-small" placeholder="HH:MM" type="text" name="time">
-                        <span class="icon is-left"><i class="far fa-clock"></i></span>
-                    </div>
-                </div>
+                
                 <div class="modal">
                     <div class="modal-background"></div>
-                    <div class="modal-card">
+                    <div class="modal-card" style="margin:auto; width:50%;">
                         <header class="modal-card-head">
-                            <p class="modal-card-title">Thank you for your business</p>
+                            <p class="modal-card-title"></p>
                             <button class="delete" aria-label="close"></button>
                         </header>
                         <section class="modal-card-body">
-                            We look forward to seeing you
+                            Thank you for your business
                         </section>
                         <footer class="modal-card-foot">
                             <button class="button is-success" id="confirm">Confirm</button>
@@ -230,7 +207,7 @@
             <button id="submit-btn" type="submit" class="button is-info is-fullwidth" style="margin-bottom: 30px;">Submit</button>
 
             <div id="submit-btn-bar" class="submit-button-bar">
-                <button class="" type="submit">Submit</button>
+                <button class="" type="">Submit</button>
             </div>
         </form>
     </div>
@@ -274,14 +251,6 @@
                 format: 'MM-DD-YYYY',
             })
         });
-        $('#isInGym').click((event)=>{
-            $('.main-3').css("display","block");
-            $('.main-3-inv').css("display","none");
-        });
-        $('#isOutGym').click((event)=>{
-            $('.main-3').css("display","none");
-            $('.main-3-inv').css("display","block");
-        });
         $('#submit-btn, #submit-btn-bar').click(function(event){
             event.preventDefault();
             let valid = true;
@@ -289,8 +258,6 @@
             let last_name = $('#last_name').val();
             let email = $('#email').val();
             let phone = $('#phone').val();
-            let form_date = $('#form_date').val();
-            let form_time = $('#form_time').val();
             let description = $('#description').val();
             let payment_mode = $('#payment_mode').val();
             let phoneno = /^\d{10}$/;
@@ -298,8 +265,6 @@
 
             var tim = /((1[0-2]|0?[1-9]):([0-5][0-9]) ?([AaPp][Mm]))/;
 
-            var time = tim.test(form_time);
-            var inGym = $('input[name="Ingym"]:checked').val();
             var q1_ques = $('input[name="q1_yes"]:checked').val();
             var q2_ques = $('input[name="q2_yes"]:checked').val();
             var q3_ques = $('input[name="q3_yes"]:checked').val();
@@ -324,7 +289,24 @@
                 $(this).focus();
                 return false;
             }
-
+            if(q1_ques === undefined){
+                alert("Please Answer the first question");
+                valid = false;
+                $(this).focus();
+                return false;
+            }
+            if(q2_ques === undefined){
+                alert("Please Answer the second question");
+                valid = false;
+                $(this).focus();
+                return false;
+            }
+            if(q3_ques === undefined){
+                alert("Please Answer the third question");
+                valid = false;
+                $(this).focus();
+                return false;
+            }
             if (  out_email === false ) {
                 alert("Please enter valid email.");
                 valid = false;
@@ -350,49 +332,17 @@
                 $(this).focus();
                 return false;
             }
-            if(inGym === undefined){
-                alert("Please select whether you are in side or out from gym.");
-                valid = false;
-                $(this).focus();
-                return false;
-            }
-            if(inGym === "Yes" && q1_ques === undefined){
-                alert("Please Answer the first question");
-                valid = false;
-                $(this).focus();
-                return false;
-            }
-            if(inGym === "Yes" && q2_ques === undefined){
-                alert("Please Answer the second question");
-                valid = false;
-                $(this).focus();
-                return false;
-            }
-            if(inGym === "Yes" && q3_ques === undefined){
-                alert("Please Answer the third question");
-                valid = false;
-                $(this).focus();
-                return false;
-            }
-            if (inGym === "No" &&  form_date === '' ) {
-                alert("Please select a date.");
-                valid = false;
-                $(this).focus();
-                return false;
-            }
-            if (inGym === "No" &&  time === false ) {
-                alert("Please select a time.");
-                valid = false;
-                $(this).focus();
-                return false;
-            }
+            
 
             if ( valid ){
 
-                $('.modal').css('display', 'block')
-
+                $('.modal').css('display', 'flex')
+                $('.delete').click(()=>{
+                    $('.modal').css('display', 'none');
+                    return false;
+                })
                 $('#confirm').click(function () {
-
+                    console.log("submitting");
                     document.getElementById('request_form').submit();
                 });
 
