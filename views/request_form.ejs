@@ -106,21 +106,6 @@
         </div>
         <form action="request_form" autocomplete="off" method="POST" id="request_form" style="margin-top: 1rem">
             <div class="field-wrap">
-
-                <div class="field">
-                    <label class="label is-small">First Name</label>
-                    <div class="control has-icons-left">
-                        <input id="first_name" class="input is-info is-small" type="text" placeholder="First Name" name="FirstName" >
-                        <span class="icon is-left"><i class="far fa-circle"></i></span>
-                    </div>
-                </div>
-                <div class="field" >
-                    <label class="label is-small">Last Name</label>
-                    <div class="control has-icons-left">
-                        <input id="last_name" class="input is-info is-small" type="text" placeholder="Last Name" name="LastName">
-                        <span class="icon is-left"><i class="far fa-circle"></i></span>
-                    </div>
-                </div>
                 <div class="field main-3" >
                     <label class="label">Have you experienced any of the following symptoms in the past 48 hours:
                         Fever or Chills, Cough, Shortness of breathing or difficulty breathing, fatigue, muscle or body aches, headache, loss of taste or smell, sore throat, congestion or runny nose, nausea or vomiting, diarrhea
@@ -141,6 +126,24 @@
                     </label>
                     <div class="control has-icons-left">
                         <label class="radio"><input type="radio" name="q3_yes" value="Yes" required> Yes</label><label class="radio"><input type="radio" name="q3_yes" value="No"> No</label>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Note: </label>
+                    <p>Fully Vaccinated clients are not required to wear a mask during your workout.  Per the CDC guidelines are you are not considered fully vaccinated until 2 weeks after your final dose of the vaccine.  At PTL, we value the integrity of our clients and will use the honor system as proof of vaccination, we will not ask to verify your vaccination card.</p>
+                </div>
+                <div class="field">
+                    <label class="label is-small">First Name</label>
+                    <div class="control has-icons-left">
+                        <input id="first_name" class="input is-info is-small" type="text" placeholder="First Name" name="FirstName" >
+                        <span class="icon is-left"><i class="far fa-circle"></i></span>
+                    </div>
+                </div>
+                <div class="field" >
+                    <label class="label is-small">Last Name</label>
+                    <div class="control has-icons-left">
+                        <input id="last_name" class="input is-info is-small" type="text" placeholder="Last Name" name="LastName">
+                        <span class="icon is-left"><i class="far fa-circle"></i></span>
                     </div>
                 </div>
                 <div class="field">
@@ -186,7 +189,13 @@
                         <span class="icon is-small is-left"><i class="fas fa-sort-alpha-down"></i></span>
                     </div>
                 </div>
-                
+                <div class="field">
+                    <label class="label is-small">Comment</label>
+                    <div class="control has-icons-left">
+                        <textarea id="comment" style="width:100%; padding: 11px 5px 11px 35px;" type="text" placeholder=" If paying by cash or pre-paid, please indicate payment amount" name="Comment" rows="2" cols="50"></textarea>
+                        <span class="icon is-left"><i class="far fa-circle"></i></span>
+                    </div>
+                </div>
                 <div class="modal">
                     <div class="modal-background"></div>
                     <div class="modal-card" style="margin:auto; width:50%;">
@@ -260,6 +269,7 @@
             let phone = $('#phone').val();
             let description = $('#description').val();
             let payment_mode = $('#payment_mode').val();
+            let comment = $('#comment').val().trim();
             let phoneno = /^\d{10}$/;
             var phone_matching = phone.match(phoneno);
 
@@ -275,20 +285,6 @@
             var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             var out_email =  re.test(email);
 
-            if ( first_name === "" ) {
-
-                alert("Please enter first name.");
-                valid = false;
-                $(this).focus();
-                return false;
-            }
-            if ( last_name === "" ) {
-
-                alert("Please enter last name.");
-                valid = false;
-                $(this).focus();
-                return false;
-            }
             if(q1_ques === undefined){
                 alert("Please Answer the first question");
                 valid = false;
@@ -303,6 +299,20 @@
             }
             if(q3_ques === undefined){
                 alert("Please Answer the third question");
+                valid = false;
+                $(this).focus();
+                return false;
+            }
+            if ( first_name === "" ) {
+
+                alert("Please enter first name.");
+                valid = false;
+                $(this).focus();
+                return false;
+            }
+            if ( last_name === "" ) {
+
+                alert("Please enter last name.");
                 valid = false;
                 $(this).focus();
                 return false;
@@ -332,7 +342,12 @@
                 $(this).focus();
                 return false;
             }
-            
+            if( (payment_mode === 'Cash' || payment_mode === 'Pre-paid') && comment === '' ){
+                alert("Please enter comment");
+                valid = false;
+                $(this).focus();
+                return false;
+            }
 
             if ( valid ){
 

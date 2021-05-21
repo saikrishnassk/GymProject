@@ -47,6 +47,7 @@ const csvWriter2 = createCsvWriter({
     {id: 'question3', title: 'Was your daily temperature self-screening greater than 100.4 degrees fahrenheit?'},
     {id: 'description', title: 'DESCRIPTION'},
     {id: 'paymentMode', title: 'PAYMENT MODE'},
+    {id: 'comment', title: 'COMMENT'},
     {id: 'createdOn', title: 'CREATED ON'}
   ]
 });
@@ -54,46 +55,46 @@ function ToCapitalize(arr){
   if(arr==='' || arr===undefined) {return '';}
   return arr.charAt(0).toUpperCase()+arr.slice(1).toLowerCase();
 }
-
-function CreateTextMessage(data, isCovid = false){
-  if(data && isCovid){
-    try{
-      clientMsg.messages
-          .create({
-              body: `Hello, 
-              \n${data.FirstName}, ${data.LastName} has Covid symptoms and requested service for ${data.Description}. Contact info : +1${data.Phone}`,
-              messagingServiceSid: 'MG7bbd293395a80dfa3871da1f90050c34',
-              to: '+13132932246'
-          })
-          .then(message => console.log(message.sid))
-          .done();
-    }
-    catch(error){
-      console.log('Failed to send message!!!');
-    }
-      return 'true';
-  }
-  else if(data){
-    try{
-      clientMsg.messages
-          .create({
-              body: `Hello, 
-              \n${data.FirstName}, ${data.LastName} has requested service for ${data.Description}. Contact info : +1${data.Phone}`,
-              messagingServiceSid: 'MG7bbd293395a80dfa3871da1f90050c34',
-              to: '+13132932246'
-          })
-          .then(message => console.log(message.sid))
-          .done();
-    }
-    catch(error){
-      console.log('Failed to send message!!!');
-    }
-      return 'true';
-  }
-  else {
-      return 'false';
-  }
-}
+//Below function sends message to owner on a request form submission.
+// function CreateTextMessage(data, isCovid = false){
+//   if(data && isCovid){
+//     try{
+//       clientMsg.messages
+//           .create({
+//               body: `Hello, 
+//               \n${data.FirstName}, ${data.LastName} has Covid symptoms and requested service for ${data.Description}. Contact info : +1${data.Phone}`,
+//               messagingServiceSid: 'MG7bbd293395a80dfa3871da1f90050c34',
+//               to: '+13132932246'
+//           })
+//           .then(message => console.log(message.sid))
+//           .done();
+//     }
+//     catch(error){
+//       console.log('Failed to send message!!!');
+//     }
+//       return 'true';
+//   }
+//   else if(data){
+//     try{
+//       clientMsg.messages
+//           .create({
+//               body: `Hello, 
+//               \n${data.FirstName}, ${data.LastName} has requested service for ${data.Description}. Contact info : +1${data.Phone}`,
+//               messagingServiceSid: 'MG7bbd293395a80dfa3871da1f90050c34',
+//               to: '+13132932246'
+//           })
+//           .then(message => console.log(message.sid))
+//           .done();
+//     }
+//     catch(error){
+//       console.log('Failed to send message!!!');
+//     }
+//       return 'true';
+//   }
+//   else {
+//       return 'false';
+//   }
+// }
 function CreateTextMessage1(data){
   if(data){
     try{
@@ -139,6 +140,9 @@ const requestFormSchema = new mongoose.Schema({
         type:String
     },
     PaymentMode:{
+      type:String
+    },
+    Comment:{
       type:String
     },
     TimeStamp:{
@@ -232,6 +236,7 @@ cron.schedule('0 0 10 5 1-12 *', ()=>{
       element_row['question3']=data[i]['Answers'][2];
       element_row['description']=data[i]['Description'];
       element_row['paymentMode']=data[i]['PaymentMode'];
+      element_row['comment']=data[i]['Comment'];
       element_row['createdOn']=data[i]['TimeStamp'];
       records.push(element_row);
     }  
@@ -325,7 +330,8 @@ app.post('/request_form',async (req,res)=>{
     data['Email'] = req.body['Email'];
     data['Phone'] = req.body['Phone'];
     data['Description'] = req.body['Description'];
-    data['PaymentMode'] = req.body['PaymentMode']
+    data['PaymentMode'] = req.body['PaymentMode'];
+    data['Comment'] = req.body['Comment'];
     data['TimeStamp'] = dateTime();
     console.log(data);
     let isCovid =false;
@@ -346,7 +352,8 @@ app.post('/request_form',async (req,res)=>{
     catch(err){
       console.log(err);
     }
-    CreateTextMessage(data,isCovid);
+    // Below line for sending text message to owner notice.
+    // CreateTextMessage(data,isCovid);
     if(data.PaymentMode === "CreditDebit-card"){
       res.redirect('payment');
     }
