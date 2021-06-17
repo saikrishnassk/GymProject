@@ -221,6 +221,7 @@ function compare_name1(a, b) {
   }
   return comparison;
 }
+// {sec minute hour date months day-of-week}
 cron.schedule('0 0 10 5 1-12 *', ()=>{
   console.log('Hi there');
   let records = [];
@@ -251,7 +252,7 @@ cron.schedule('0 0 10 5 1-12 *', ()=>{
   })
   .then(data2 =>{
     transporter.sendMail({
-      to: 'ptlfitnessllc@gmail.com',
+      to: ['ptlfitnessllc@gmail.com','psingamsetti@wirelessvision.com','Yroyallwilliams@wirelessvision.com'],
       from: 'pushthelimitfit@gmail.com',
       subject: 'Report for Request form',
       html: '<p>Hello,</p><br><p>This report contains all data of Scheduled Requests</p>',
@@ -296,7 +297,7 @@ cron.schedule('0 2 10 5 1-12 *', ()=>{
   })
   .then(data2 =>{
     transporter.sendMail({
-      to: 'ptlfitnessllc@gmail.com',
+      to: ['ptlfitnessllc@gmail.com','psingamsetti@wirelessvision.com','Yroyallwilliams@wirelessvision.com'],
       from: 'pushthelimitfit@gmail.com',
       subject: 'Report for payments',
       html: '<p>Hello,</p><br><p>This report contains all data of successful payments</p>',

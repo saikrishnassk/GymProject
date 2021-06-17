@@ -1,2 +1,5 @@
 /node_modules
 .env
+request_form_report.csv
+self_assessment_report.csv
+payment_report.csv

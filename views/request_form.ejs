@@ -50,6 +50,9 @@
         background-color: #C8B946;
         border: 1px solid #C8B946;
     }
+    .field .label .required{
+        color:red;
+    }
 </style>
 <body>
 
@@ -108,21 +111,21 @@
             <div class="field-wrap">
                 <div class="field main-3" >
                     <label class="label">Have you experienced any of the following symptoms in the past 48 hours:
-                        Fever or Chills, Cough, Shortness of breathing or difficulty breathing, fatigue, muscle or body aches, headache, loss of taste or smell, sore throat, congestion or runny nose, nausea or vomiting, diarrhea
+                        Fever or Chills, Cough, Shortness of breathing or difficulty breathing, fatigue, muscle or body aches, headache, loss of taste or smell, sore throat, congestion or runny nose, nausea or vomiting, diarrhea<span class="required">*</span>
                     </label>
                     <div class="control has-icons-left">
                         <label class="radio"><input type="radio" name="q1_yes" value="Yes" required> Yes</label><label class="radio"><input type="radio" name="q1_yes" value="No"> No</label>
                     </div>
                 </div>
                 <div class="field main-3" >
-                    <label class="label">Have you had close contact with a laboratory confirmed case of COVID-19 in the last 14 days?
+                    <label class="label">Have you had close contact with a laboratory confirmed case of COVID-19 in the last 14 days?<span class="required">*</span>
                     </label>
                     <div class="control has-icons-left">
                         <label class="radio"><input type="radio" name="q2_yes" value="Yes" required> Yes</label><label class="radio"><input type="radio" name="q2_yes" value="No"> No</label>
                     </div>
                 </div>
                 <div class="field main-3" >
-                    <label class="label">Was your daily temperature self-screening greater than 100.4 degrees fahrenheit?
+                    <label class="label">Was your daily temperature self-screening greater than 100.4 degrees fahrenheit?<span class="required">*</span>
                     </label>
                     <div class="control has-icons-left">
                         <label class="radio"><input type="radio" name="q3_yes" value="Yes" required> Yes</label><label class="radio"><input type="radio" name="q3_yes" value="No"> No</label>
@@ -133,14 +136,14 @@
                     <p>Fully Vaccinated clients are not required to wear a mask during your workout.  Per the CDC guidelines are you are not considered fully vaccinated until 2 weeks after your final dose of the vaccine.  At PTL, we value the integrity of our clients and will use the honor system as proof of vaccination, we will not ask to verify your vaccination card.</p>
                 </div>
                 <div class="field">
-                    <label class="label is-small">First Name</label>
+                    <label class="label is-small">First Name<span class="required">*</span></label>
                     <div class="control has-icons-left">
                         <input id="first_name" class="input is-info is-small" type="text" placeholder="First Name" name="FirstName" >
                         <span class="icon is-left"><i class="far fa-circle"></i></span>
                     </div>
                 </div>
                 <div class="field" >
-                    <label class="label is-small">Last Name</label>
+                    <label class="label is-small">Last Name<span class="required">*</span></label>
                     <div class="control has-icons-left">
                         <input id="last_name" class="input is-info is-small" type="text" placeholder="Last Name" name="LastName">
                         <span class="icon is-left"><i class="far fa-circle"></i></span>
@@ -161,7 +164,7 @@
                     </div>
                 </div>
                 <div class="field">
-                    <label class="label is-small">Select Service</label>
+                    <label class="label is-small">Select Service<span class="required">*</span></label>
                     <div class="control has-icons-left">
                         <div class="select is-info is-small is-fullwidth">
                             <select id="description" name="Description">
@@ -176,7 +179,7 @@
                     </div>
                 </div>
                 <div class="field">
-                    <label class="label is-small">Payment Mode</label>
+                    <label class="label is-small">Payment Mode<span class="required">*</span></label>
                     <div class="control has-icons-left">
                         <div class="select is-info is-small is-fullwidth">
                             <select id="payment_mode" name="PaymentMode">
@@ -265,13 +268,13 @@
             let valid = true;
             let first_name = $('#first_name').val();
             let last_name = $('#last_name').val();
-            let email = $('#email').val();
-            let phone = $('#phone').val();
+            // let email = $('#email').val();
+            // let phone = $('#phone').val();
             let description = $('#description').val();
             let payment_mode = $('#payment_mode').val();
             let comment = $('#comment').val().trim();
-            let phoneno = /^\d{10}$/;
-            var phone_matching = phone.match(phoneno);
+            // let phoneno = /^\d{10}$/;
+            // var phone_matching = phone.match(phoneno);
 
             var tim = /((1[0-2]|0?[1-9]):([0-5][0-9]) ?([AaPp][Mm]))/;
 
@@ -283,7 +286,7 @@
             description = description.trim();
 
             var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            var out_email =  re.test(email);
+            // var out_email =  re.test(email);
 
             if(q1_ques === undefined){
                 alert("Please Answer the first question");
@@ -317,18 +320,18 @@
                 $(this).focus();
                 return false;
             }
-            if (  out_email === false ) {
-                alert("Please enter valid email.");
-                valid = false;
-                $(this).focus();
-                return false;
-            }
-            if (  phone_matching === null ) {
-                alert("Please enter valid Phone number.");
-                valid = false;
-                $(this).focus();
-                return false;
-            }
+            // if (  out_email === false ) {
+            //     alert("Please enter valid email.");
+            //     valid = false;
+            //     $(this).focus();
+            //     return false;
+            // }
+            // if (  phone_matching === null ) {
+            //     alert("Please enter valid Phone number.");
+            //     valid = false;
+            //     $(this).focus();
+            //     return false;
+            // }
 
             if (  description === '' ) {
                 alert("Please select a service.");
