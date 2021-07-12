@@ -109,30 +109,30 @@
         </div>
         <form action="request_form" autocomplete="off" method="POST" id="request_form" style="margin-top: 1rem">
             <div class="field-wrap">
-                <div class="field main-3" >
+                <!-- <div class="field main-3" >
                     <label class="label">Have you experienced any of the following symptoms in the past 48 hours:
                         Fever or Chills, Cough, Shortness of breathing or difficulty breathing, fatigue, muscle or body aches, headache, loss of taste or smell, sore throat, congestion or runny nose, nausea or vomiting, diarrhea<span class="required">*</span>
                     </label>
                     <div class="control has-icons-left">
                         <label class="radio"><input type="radio" name="q1_yes" value="Yes" required> Yes</label><label class="radio"><input type="radio" name="q1_yes" value="No"> No</label>
                     </div>
-                </div>
-                <div class="field main-3" >
+                </div> -->
+                <!-- <div class="field main-3" >
                     <label class="label">Have you had close contact with a laboratory confirmed case of COVID-19 in the last 14 days?<span class="required">*</span>
                     </label>
                     <div class="control has-icons-left">
                         <label class="radio"><input type="radio" name="q2_yes" value="Yes" required> Yes</label><label class="radio"><input type="radio" name="q2_yes" value="No"> No</label>
                     </div>
-                </div>
-                <div class="field main-3" >
+                </div> -->
+                <!-- <div class="field main-3" >
                     <label class="label">Was your daily temperature self-screening greater than 100.4 degrees fahrenheit?<span class="required">*</span>
                     </label>
                     <div class="control has-icons-left">
                         <label class="radio"><input type="radio" name="q3_yes" value="Yes" required> Yes</label><label class="radio"><input type="radio" name="q3_yes" value="No"> No</label>
                     </div>
-                </div>
+                </div> -->
                 <div class="field">
-                    <label class="label">Note: </label>
+                    <label class="label">COVID Update </label>
                     <p>Fully Vaccinated clients are not required to wear a mask during your workout.  Per the CDC guidelines are you are not considered fully vaccinated until 2 weeks after your final dose of the vaccine.  At PTL, we value the integrity of our clients and will use the honor system as proof of vaccination, we will not ask to verify your vaccination card.</p>
                 </div>
                 <div class="field">
@@ -172,6 +172,21 @@
                                 <option value="Bootcamp">Bootcamp ($15 per session)</option>
                                 <option value="Personal Session">Personal Session</option>
                                 <option value="Consultation">Consultation</option>
+                            </select>
+                        </div>
+                        <span class="icon is-small is-left"><i class="fas fa-sort-alpha-down"></i></span>
+
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label is-small">Select Trainer<span class="required">*</span></label>
+                    <div class="control has-icons-left">
+                        <div class="select is-info is-small is-fullwidth">
+                            <select id="trainer" name="Trainer">
+                                <option value="">...</option>
+                                <option value="Rance Williams">Rance Williams (Owner)</option>
+                                <option value="Jalen Thomas">Jalen Thomas</option>
+                                <option value="Mae Dulin">Mae Dulin</option>
                             </select>
                         </div>
                         <span class="icon is-small is-left"><i class="fas fa-sort-alpha-down"></i></span>
@@ -271,6 +286,7 @@
             // let email = $('#email').val();
             // let phone = $('#phone').val();
             let description = $('#description').val();
+            let trainer = $('#trainer').val();
             let payment_mode = $('#payment_mode').val();
             let comment = $('#comment').val().trim();
             // let phoneno = /^\d{10}$/;
@@ -288,24 +304,24 @@
             var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             // var out_email =  re.test(email);
 
-            if(q1_ques === undefined){
-                alert("Please Answer the first question");
-                valid = false;
-                $(this).focus();
-                return false;
-            }
-            if(q2_ques === undefined){
-                alert("Please Answer the second question");
-                valid = false;
-                $(this).focus();
-                return false;
-            }
-            if(q3_ques === undefined){
-                alert("Please Answer the third question");
-                valid = false;
-                $(this).focus();
-                return false;
-            }
+            // if(q1_ques === undefined){
+            //     alert("Please Answer the first question");
+            //     valid = false;
+            //     $(this).focus();
+            //     return false;
+            // }
+            // if(q2_ques === undefined){
+            //     alert("Please Answer the second question");
+            //     valid = false;
+            //     $(this).focus();
+            //     return false;
+            // }
+            // if(q3_ques === undefined){
+            //     alert("Please Answer the third question");
+            //     valid = false;
+            //     $(this).focus();
+            //     return false;
+            // }
             if ( first_name === "" ) {
 
                 alert("Please enter first name.");
@@ -335,6 +351,12 @@
 
             if (  description === '' ) {
                 alert("Please select a service.");
+                valid = false;
+                $(this).focus();
+                return false;
+            }
+            if (  trainer === '' ) {
+                alert("Please select a trainer.");
                 valid = false;
                 $(this).focus();
                 return false;
