@@ -153,8 +153,22 @@ const requestFormSchema = new mongoose.Schema({
         type:String
     }
 });
+const employeeConsentSchema = new mongoose.Schema({
+  Name:{
+      type:String
+  },
+  ClientName:{
+      type:String
+  },
+  FeeCollected:{
+    type:String
+  },
+  TimeStamp:{
+      type:String
+  }
+});
 const RequestForm = mongoose.model('RequestForm',requestFormSchema);
-
+const EmployeeConsent = mongoose.model('EmployeeConsent', employeeConsentSchema);
 const paymentFormSchema = new mongoose.Schema({
   Name:{
       type:String
@@ -189,6 +203,9 @@ app.get('/self_assessment',(req,res)=>{
 });
 app.get('/request_form',(req,res)=>{
     res.render('request_form');
+});
+app.get('/employee_consent',(req,res)=>{
+  res.render('employee_consent');
 });
 
 app.get('/feedback',(req,res)=>{
@@ -365,6 +382,24 @@ app.post('/request_form',async (req,res)=>{
       res.redirect('payment');
     }
     res.redirect('request_form');
+});
+
+app.post('/employee_consent',async (req,res)=>{
+
+  let data={};
+  data['Name'] = ToCapitalize(req.body['Name']);
+  data['ClientName'] = ToCapitalize(req.body['ClientName']);
+  data['FeeCollected'] = req.body['FeeCollected'];
+  data['TimeStamp'] = dateTime();
+  console.log(data);
+  try{
+    let EmployeeConsentModel = new EmployeeConsent(data);
+    await EmployeeConsentModel.save();  
+  }
+  catch(err){
+    console.log(err);
+  }
+  res.redirect('employee_consent');
 });
 
 app.get('/payment',(req,res)=>{
