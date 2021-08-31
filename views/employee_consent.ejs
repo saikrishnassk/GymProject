@@ -134,6 +134,13 @@
                     <label class="label is-small">Fee Collected<span class="required">*</span></label>
                     <div class="control has-icons-left">
                         <input id="fee_collected" class="input is-info is-small" type="text" placeholder="Fees" name="FeeCollected">
+                        <span class="dollar-symbol" style="position: absolute; top:50%; left:8px; transform: translateY(-50%); opacity:30%;"><i class="fas fa-dollar-sign"></i></span>
+                    </div>
+                </div>
+                <div class="field" >
+                    <label class="label is-small">Notes<span class="required">*</span></label>
+                    <div class="control has-icons-left">
+                        <textarea id="notes" class="input is-info is-small" type="text" placeholder="Notes" name="Notes" rows = "4" columns = "50"></textarea>
                         <span class="icon is-left"><i class="far fa-circle"></i></span>
                     </div>
                 </div>
@@ -207,9 +214,11 @@
             let client_name = $('#client_name').val();
             let fee_collected = $('#fee_collected').val();
             let name = $('#name').val();
+            let notes = $('#notes').val();
 
             client_name = client_name.trim();
             fee_collected = fee_collected.trim();
+            notes = notes.trim();
             name = name.trim();
             if (  name === '' ) {
                 alert("Please select a Name.");
@@ -227,6 +236,12 @@
             if ( fee_collected === "" ) {
 
                 alert("Please enter fee collected");
+                valid = false;
+                $(this).focus();
+                return false;
+            }
+            if(notes === ""){
+                alert("Please add some note.");
                 valid = false;
                 $(this).focus();
                 return false;

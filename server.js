@@ -26,6 +26,16 @@ const connectDB = async () =>{
 connectDB();
 
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
+const csvWriter3 = createCsvWriter({
+  path: 'employee_consent.csv',
+  header: [
+      {id: 'name', title: 'NAME'},
+      {id: 'clientName', title: 'CLIENTNAME'},
+      {id: 'feeCollected', title: 'FEECOLLECTED'},
+      {id: 'date', title: 'DATE'},
+      {id: 'notes', title: 'NOTES'}
+  ]
+});
 const csvWriter1 = createCsvWriter({
   path: 'payment_report.csv',
   header: [
@@ -339,6 +349,53 @@ cron.schedule('0 2 10 5 1-12 *', ()=>{
 }, {
   scheduled: true,
   timezone: 'America/Detroit'
+});
+
+
+cron.schedule('0 4 10 5 1-12 *', ()=>{
+  console.log('Hi there');
+  let records = [];
+  EmployeeConsent.find({}).then(data =>{
+    for(var i=0;i<data.length;i++){
+      let element_row={};
+      element_row['name']=data[i]['Name'];
+      element_row['clientName']=data[i]['ClientName'];
+      element_row['feeCollected']=data[i]['FeeCollected'];
+      element_row['date']=data[i]['TimeStamp'].slice(0,10);
+      element_row['notes']=data[i]['Notes'];
+      records.push(element_row);
+    }  
+  }).then(data1 =>{
+    records.sort(compare_name);
+    console.log(records);
+    csvWriter3.writeRecords(records)       // returns a promise
+    .then(() => {
+        console.log('...Done1');
+    });
+
+  })
+  .then(data2 =>{
+    transporter.sendMail({
+      to: ['ptlfitnessllc@gmail.com','psingamsetti@wirelessvision.com','Yroyallwilliams@wirelessvision.com','srush@elitea2.com'],
+      from: 'pushthelimitfit@gmail.com',
+      subject: 'Report for employee consents',
+      html: '<p>Hello,</p><br><p>This report contains all data of employee consent</p>',
+      text: 'Hello,\nThis report contains all data of employee consent',
+      attachments: [{
+        filename: 'employee_consent.csv', path: './employee_consent.csv'
+      }]
+    }).then(data =>{
+      console.log('Sent mail sucessfully!!',data);
+      EmployeeConsent.deleteMany({}, (result) =>{
+            console.log(result);
+        });
+    }).catch(err =>{
+      console.log('Error in sending : ',err);
+    });
+  });
+}, {
+  scheduled: true,
+  timezone: 'America/Detroit'
 })
 
 
@@ -390,6 +447,7 @@ app.post('/employee_consent',async (req,res)=>{
   data['Name'] = ToCapitalize(req.body['Name']);
   data['ClientName'] = ToCapitalize(req.body['ClientName']);
   data['FeeCollected'] = req.body['FeeCollected'];
+  data['Notes'] = req.body['Notes'];
   data['TimeStamp'] = dateTime();
   console.log(data);
   try{
