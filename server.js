@@ -14,7 +14,7 @@ const accountSid = `${config.accountSid}`;
 const authToken = `${config.authToken}`;
 
 const clientMsg = require('twilio')(accountSid, authToken);
-
+const cors = require('cors');
  
 mongoose.set('useFindAndModify', false);
 const URI =`${config.mongodb_url}`;
@@ -200,6 +200,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
 app.use(express.static(__dirname+'/public'));
+app.use(cors());
 app.set('view engine','ejs');
 app.set('views',__dirname+'/views');
 
@@ -470,7 +471,7 @@ const client = new Client({
     environment: Environment.Production,
     accessToken: accessToken,
   });
-  
+
   app.post('/process-payment', async (req, res) => {
     const requestParams = req.body;
     let data = {};
@@ -485,7 +486,7 @@ const client = new Client({
     // Charge the customer's card
     const paymentsApi = client.paymentsApi;
     const requestBody = {
-      sourceId: requestParams.nonce,
+      sourceId: requestParams.sourceId,
       amountMoney: {
         amount: 100*requestParams.amount, // $1.00 charge
         currency: 'USD'
@@ -495,10 +496,15 @@ const client = new Client({
     };
   
     try {
-      const response = await paymentsApi.createPayment(requestBody);
+      const {result, statusCode} = await paymentsApi.createPayment(requestBody);
       res.status(200).json({
         'title': 'Payment Successful',
-        'result': response.result
+        "payment": {
+          id: result.payment.id,
+          status: result.payment.status,
+          receiptUrl: result.payment.receiptUrl,
+          orderId: result.payment.orderId,
+        }
       });
       let PaymentFormModel = new PaymentForm(data);
       await PaymentFormModel.save();

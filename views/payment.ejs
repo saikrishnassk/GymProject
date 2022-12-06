@@ -5,7 +5,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- <script type="text/javascript" src="https://js.squareupsandbox.com/v2/paymentform"></script> -->
-    <script type="text/javascript" src="https://js.squareup.com/v2/paymentform"></script>
+    <!-- <script type="text/javascript" src="https://js.squareup.com/v2/paymentform"></script> -->
+    <script
+      type="text/javascript"
+      src="https://sandbox.web.squarecdn.com/v1/square.js"
+    ></script>
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <script src="https://kit.fontawesome.com/3c3721e7e6.js" crossorigin="anonymous"></script>
     <title>Push The Limit Fitness</title>
@@ -13,6 +17,7 @@
     
     <!-- link to the local custom styles for SqPaymentForm -->
     <link rel="stylesheet" type="text/css" href="mysqpaymentform.css">
+    <script src="payment-js.js"></script>
   </head>
   <body>
     <div id="form-container">
@@ -21,17 +26,14 @@
       <input id="payment-name" type="text" placeholder="Name" name="Name" required>
       <input id="payment-amount" type="number" placeholder="Amount" name="Amount" required><span class="dollar-symbol"><i class="fas fa-dollar-sign"></i></span>
       <input id="payment-note" type="text" placeholder="Note" name="Note">
-      <div id="sq-card-number"></div>
-      <div class="third" id="sq-expiration-date"></div>
-      <div class="third" id="sq-cvv"></div>
-      <div class="third" id="sq-postal-code"></div>
-      <button id="sq-creditcard" class="button-credit-card" onclick="onGetCardNonce(event)">Pay Now</button>
+      <div id="card-container"></div>
+      <button id="card-button" class="button-credit-card" type="button">Pay</button>
+      <!-- <button id="sq-creditcard" class="button-credit-card" onclick="onGetCardNonce(event)">Pay Now</button> -->
       <button class="apple-pay-button apple-pay-button-black" id="sq-apple-pay" onclick="createPaymentRequest(event)"></button>
       <!-- <div id="sq-apple-pay-label" class="wallet-not-enabled">Apple Pay not enabled</div> -->
-
+      <div id="payment-status-container"></div>
     </div> <!-- end #form-container --> 
     <!-- TODO: Add script from step 1.1.3 -->
-    <script src="payment-js.js"></script>
-    
+     
   </body>
 </html>
